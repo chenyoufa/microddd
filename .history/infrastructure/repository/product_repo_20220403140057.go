@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"fmt"
 	aggregate "gomicroddd/domain/aggregate"
 	"gomicroddd/infrastructure/db/dbcore"
 
@@ -12,7 +11,6 @@ import (
 
 func init() {
 	t, _ := aggregate.NewCustomer("aa")
-	fmt.Print(t)
 	dbcore.RegisterInjector(func(db *gorm.DB) {
 		dbcore.SetupTableModel(db, &t)
 

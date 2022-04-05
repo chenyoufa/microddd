@@ -20,9 +20,9 @@ var (
 type Product struct {
 	// item is the root entity which is an item
 	Item  *entity.Item
-	price float64
+	Price float64
 	// Quantity is the number of products in stock
-	quantity int
+	Quantity int
 }
 
 // NewProduct will create a new product
@@ -38,8 +38,8 @@ func NewProduct(name, description string, price float64) (Product, error) {
 			Name:        name,
 			Description: description,
 		},
-		price:    price,
-		quantity: 0,
+		Price:    price,
+		Quantity: 0,
 	}, nil
 }
 
@@ -52,5 +52,5 @@ func (p Product) GetItem() *entity.Item {
 }
 
 func (p Product) GetPrice() float64 {
-	return p.price
+	return p.Price
 }

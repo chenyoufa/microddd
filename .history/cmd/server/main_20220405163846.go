@@ -18,8 +18,7 @@ func main() {
 	if err != nil {
 		fmt.Printf("err fail:%v", err)
 	}
-	// p := d.Customer{}
-	// p.Paaaff = 222
+	Customer
 	roduct := infrasrepo.MemoryProductRepository()
 	list, err := roduct.GetAll(context.Background())
 	if err != nil {

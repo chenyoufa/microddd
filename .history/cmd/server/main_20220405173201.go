@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	d "gomicroddd/domain/aggregate"
 	"gomicroddd/infrastructure/db/dbcore"
 	infrasrepo "gomicroddd/infrastructure/repository"
 	"log"
@@ -18,8 +19,8 @@ func main() {
 	if err != nil {
 		fmt.Printf("err fail:%v", err)
 	}
-	// p := d.Customer{}
-	// p.Paaaff = 222
+	p := d.Customer{}
+	p.Paaaff = 222
 	roduct := infrasrepo.MemoryProductRepository()
 	list, err := roduct.GetAll(context.Background())
 	if err != nil {

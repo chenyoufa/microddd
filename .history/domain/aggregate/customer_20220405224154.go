@@ -30,7 +30,6 @@ type Customer struct {
 //只能通过聚合根来导航
 //实体是可修改的所以是指针
 //值对象是只读的所以是结构体的值
-//聚合与聚合之间通过聚合根的id引用，所以聚合根应该是可访问的
 func (p *Customer) GetProducts() []*entity.Item {
 	return p.products
 }

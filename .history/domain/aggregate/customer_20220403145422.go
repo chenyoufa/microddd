@@ -26,19 +26,6 @@ type Customer struct {
 	transactions []valueobject.Transaction
 }
 
-//外面的聚合想要不能访问内部聚合
-//只能通过聚合根来导航
-//实体是可修改的所以是指针
-//值对象是只读的所以是结构体的值
-//聚合与聚合之间通过聚合根的id引用，所以聚合根应该是可访问的
-func (p *Customer) GetProducts() []*entity.Item {
-	return p.products
-}
-
-func (p *Customer) GetTransactions() []valueobject.Transaction {
-	return p.transactions
-}
-
 // NewCustomer is a factory to create a new Customer aggregate
 // It will validate that the name is not empty
 func NewCustomer(name string) (Customer, error) {
@@ -62,26 +49,26 @@ func NewCustomer(name string) (Customer, error) {
 
 // GetID returns the customers root entity ID
 func (c *Customer) GetID() uuid.UUID {
-	return c.Person.ID
+	return c.person.ID
 }
 
 // SetID sets the root ID
 func (c *Customer) SetID(id uuid.UUID) {
-	if c.Person == nil {
-		c.Person = &entity.Person{}
+	if c.person == nil {
+		c.person = &entity.Person{}
 	}
-	c.Person.ID = id
+	c.person.ID = id
 }
 
 // SetName changes the name of the Customer
 func (c *Customer) SetName(name string) {
-	if c.Person == nil {
-		c.Person = &entity.Person{}
+	if c.person == nil {
+		c.person = &entity.Person{}
 	}
-	c.Person.Name = name
+	c.person.Name = name
 }
 
 // SetName changes the name of the Customer
 func (c *Customer) GetName() string {
-	return c.Person.Name
+	return c.person.Name
 }
