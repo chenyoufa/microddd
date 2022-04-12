@@ -14,21 +14,27 @@ type OrderService struct {
 	products  repository.ProductRepository
 }
 
+func NewOrderService(cus repository.CustomerRepository, pro repository.ProductRepository) {
+	os := &OrderService{}
+	os.customers = cus
+	os.products = pro
+}
+
 // NewOrderService takes a variable amount of OrderConfiguration functions and returns a new OrderService
 // Each OrderConfiguration will be called in the order they are passed in
-func NewOrderService(cfgs ...OrderConfiguration) (*OrderService, error) {
-	// Create the orderservice
-	os := &OrderService{}
-	// Apply all Configurations passed in
-	for _, cfg := range cfgs {
-		// Pass the service into the configuration function
-		err := cfg(os)
-		if err != nil {
-			return nil, err
-		}
-	}
-	return os, nil
-}
+// func NewOrderService(cfgs ...OrderConfiguration) (*OrderService, error) {
+// 	// Create the orderservice
+// 	os := &OrderService{}
+// 	// Apply all Configurations passed in
+// 	for _, cfg := range cfgs {
+// 		// Pass the service into the configuration function
+// 		err := cfg(os)
+// 		if err != nil {
+// 			return nil, err
+// 		}
+// 	}
+// 	return os, nil
+// }
 
 // // WithCustomerRepository applies a given customer repository to the OrderService
 // func WithCustomerRepository(cr interfacerepo.CustomerRepository) OrderConfiguration {

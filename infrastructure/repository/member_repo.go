@@ -8,22 +8,9 @@ import (
 	"gomicroddd/infrastructure/db/dbcore"
 
 	"github.com/google/uuid"
-	"gorm.io/gorm"
 )
 
-func init() {
-
-	dbcore.RegisterInjector(func(db *gorm.DB) {
-		dbcore.SetupTableModel(db, &entity.User{})
-		dbcore.SetupTableModel(db, &entity.Role{})
-		dbcore.SetupTableModel(db, &valueobject.UserRoleRelation{})
-	})
-}
-
-type memberinfra struct{}
-
-func NewMemberinfra() *memberinfra {
-	return &memberinfra{}
+type memberinfra struct {
 }
 
 func (m *memberinfra) Get(ctx context.Context, uuid uuid.UUID) (*aggregate.Member, error) {
