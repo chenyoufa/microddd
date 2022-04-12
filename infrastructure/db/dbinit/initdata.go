@@ -30,6 +30,12 @@ func run() error {
 	return nil
 }
 
-func initConfig() {
-
+func LoadConfig() (*dbcore.DBConfig, error) {
+	config := dbcore.DBConfig{
+		DbType:      "mysql",
+		DSN:         "fage:Fage501526~@(127.0.0.1:3306)/mytest",
+		AutoMigrate: true,
+		Debug:       false,
+	}
+	return &config, nil
 }

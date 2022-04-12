@@ -1,13 +1,18 @@
 package repository
 
-import "gorm.io/gorm"
+import (
+	"microddd/domain/repository"
 
-type Repository struct {
-	UserRepos *userRepos
-}
+	"gorm.io/gorm"
+)
 
-func NewRepository(cdb *gorm.DB) *Repository {
-	return &Repository{
-		&userRepos{cdb},
+// type Repository struct {
+// 	MemberRepos  memberRepos
+// }
+
+func NewRepository(cdb *gorm.DB) *repository.AuthFactory {
+
+	return &repository.AuthFactory{
+		MRepo: &memberRepos{db: cdb},
 	}
 }

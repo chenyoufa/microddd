@@ -12,11 +12,12 @@ type memberApp struct {
 	mRepo repository.MemberRepo
 }
 
-// func NewProductService(mRepo repository.MemberRepo) *memberApp {
-// 	return &memberApp{
-// 		mRepo: mRepo,
-// 	}
-// }
+func NewmemberApp(memberRepos repository.MemberRepo) *memberApp {
+	return &memberApp{
+		mRepo: memberRepos,
+	}
+}
+
 func (u *memberApp) Get(ctx context.Context, uuid uuid.UUID) (*aggregate.Member_aggre, error) {
 	m, err := u.mRepo.Get(ctx, uuid)
 

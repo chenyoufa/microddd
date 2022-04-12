@@ -3,11 +3,11 @@ package application
 import "microddd/domain/repository"
 
 type App struct {
-	mapp *memberApp
+	Mapp *memberApp
 }
 
-func NewApps(repo repository.MemberRepo) *App {
+func NewApps(repo *repository.AuthFactory) *App {
 	return &App{
-		&memberApp{mRepo: repo},
+		&memberApp{mRepo: repo.MRepo},
 	}
 }
