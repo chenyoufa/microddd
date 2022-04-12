@@ -6,6 +6,7 @@ package main
 
 import (
 	"github.com/google/wire"
+	"microddd/infrastructure/db/dbcore"
 	"microddd/infrastructure/repository"
 )
 
@@ -19,12 +20,15 @@ var providerSet = wire.NewSet(
 	// log.NewLogger,
 	// redis.NewRedis,
 	// mongo.NewMongo,
+
+	dbcore.Connect,
 	repository.NewRepository,
+	// application.NewApps,
 	// aggregate.NewFactory,
 	// service.NewService,
 	// adpter.NewSrv,
 )
 
-func NewApp() (*adpter.Server, error) {
+func NewApp() (*repository.Repository, error) {
 	panic(wire.Build(providerSet))
 }
