@@ -8,9 +8,11 @@ import (
 	"gomicroddd/infrastructure/db/dbcore"
 
 	"github.com/google/uuid"
+	"gorm.io/gorm"
 )
 
 type memberinfra struct {
+	db *gorm.DB
 }
 
 func (m *memberinfra) Get(ctx context.Context, uuid uuid.UUID) (*aggregate.Member, error) {

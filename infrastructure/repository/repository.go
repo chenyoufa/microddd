@@ -18,16 +18,17 @@ func init() {
 }
 
 type repository struct {
-	MemberRepo *Merchant
-	AuthCode   *AuthCode
-	AuthToken  *AuthToken
+	db *gorm.DB
 }
 
-func NewRepository() *Repository {
-	var a = repository{mgo, r}
+type Repository struct {
+	MemberRepo *memberinfra
+}
+
+func NewRepository(db *gorm.DB) *Repository {
+	var a = repository{db}
+
 	return &Repository{
-		&Merchant{a},
-		&AuthCode{a},
-		&AuthToken{a},
+		MemberRepo: a,
 	}
 }
