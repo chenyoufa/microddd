@@ -13,7 +13,6 @@ import (
 func NewRepository(cdb *gorm.DB) *repository.AuthFactory {
 
 	return &repository.AuthFactory{
-
 		MRepo: &memberRepos{db: cdb},
 	}
 }

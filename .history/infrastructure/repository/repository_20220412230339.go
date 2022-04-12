@@ -1,7 +1,9 @@
 package repository
 
 import (
+	"context"
 	"microddd/domain/repository"
+	"microddd/infrastructure/db/dbcore"
 
 	"gorm.io/gorm"
 )
@@ -14,6 +16,6 @@ func NewRepository(cdb *gorm.DB) *repository.AuthFactory {
 
 	return &repository.AuthFactory{
 
-		MRepo: &memberRepos{db: cdb},
+		MRepo: &memberRepos{db: dbcore.GetDB(context.Background())},
 	}
 }

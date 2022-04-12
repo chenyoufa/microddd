@@ -8,10 +8,6 @@ import (
 	"github.com/google/uuid"
 )
 
-type memberApper interface {
-	Get(ctx context.Context, uuid uuid.UUID) (*aggregate.Member_aggre, error)
-}
-
 type memberApp struct {
 	mRepo repository.MemberRepoer
 }
