@@ -2,7 +2,7 @@ package entity
 
 import "github.com/google/uuid"
 
-type Role_entity struct {
+type RoleEntity struct {
 	ID       uuid.UUID
 	RoleName string
 	Remark   string

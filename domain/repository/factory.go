@@ -1,7 +1,7 @@
 package repository
 
 type AuthFactory struct {
-	MRepo MemberRepo
+	MRepo MemberRepoer
 }
 
 // func NewFactory(repo *repository.Repository) *AuthFactory {

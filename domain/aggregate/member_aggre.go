@@ -8,16 +8,16 @@ import (
 )
 
 type Member_aggre struct {
-	User     entity.User_entity
-	role     []*entity.Role_entity
-	userrole []*entity.UserRole_entity
+	User     entity.UserEntity
+	role     []*entity.RoleEntity
+	userrole []*entity.UserRoleEntity
 }
 
 func NewMember(loginname string, email string, password string) (*Member_aggre, error) {
 	if loginname == "" || email == "" || password == "" {
 		return nil, errors.New("请输入必填项")
 	}
-	user := entity.User_entity{
+	user := entity.UserEntity{
 		uuid.New(),
 		loginname,
 		email,
@@ -25,6 +25,6 @@ func NewMember(loginname string, email string, password string) (*Member_aggre, 
 	}
 	return &Member_aggre{
 		user,
-		make([]*entity.Role_entity, 0),
-		make([]*entity.UserRole_entity, 0)}, nil
+		make([]*entity.RoleEntity, 0),
+		make([]*entity.UserRoleEntity, 0)}, nil
 }

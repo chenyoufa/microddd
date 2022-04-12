@@ -7,6 +7,6 @@ import (
 	"github.com/google/uuid"
 )
 
-type MemberRepo interface {
+type MemberRepoer interface {
 	Get(ctx context.Context, uuid uuid.UUID) (*aggregate.Member_aggre, error)
 }

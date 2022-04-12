@@ -2,7 +2,7 @@ package entity
 
 import "github.com/google/uuid"
 
-type UserRole_entity struct {
+type UserRoleEntity struct {
 	ID     uuid.UUID
 	RoleID uuid.UUID
 	UserID uuid.UUID

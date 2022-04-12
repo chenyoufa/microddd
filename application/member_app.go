@@ -9,10 +9,10 @@ import (
 )
 
 type memberApp struct {
-	mRepo repository.MemberRepo
+	mRepo repository.MemberRepoer
 }
 
-func NewmemberApp(memberRepos repository.MemberRepo) *memberApp {
+func NewmemberApp(memberRepos repository.MemberRepoer) *memberApp {
 	return &memberApp{
 		mRepo: memberRepos,
 	}

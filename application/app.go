@@ -1,9 +1,19 @@
 package application
 
-import "microddd/domain/repository"
+import (
+	"context"
+	"microddd/domain/aggregate"
+	"microddd/domain/repository"
+
+	"github.com/google/uuid"
+)
+
+type memberApper interface {
+	Get(ctx context.Context, uuid uuid.UUID) (*aggregate.Member_aggre, error)
+}
 
 type App struct {
-	Mapp *memberApp
+	Mapp memberApper
 }
 
 func NewApps(repo *repository.AuthFactory) *App {
