@@ -3,16 +3,15 @@ package aggregate
 import (
 	"errors"
 	"microddd/domain/entity"
-	"microddd/domain/valobj"
 
 	"github.com/google/uuid"
 )
 
 //用户 角色  用户角色关系删除、冻结
 type Member_aggre struct {
-	User *entity.UserEntity
-	// roles []*entity.RoleEntity
-	userroles []valobj.UserRoleValObj
+	User  *entity.UserEntity
+	roles []*entity.RoleEntity
+	// userrole []*entity.UserRoleEntity
 }
 
 func NewMember(loginname string, email string, password string) (*Member_aggre, error) {
@@ -27,22 +26,15 @@ func NewMember(loginname string, email string, password string) (*Member_aggre, 
 	}
 	return &Member_aggre{
 		&user,
-		make([]valobj.UserRoleValObj, 0),
+		make([]*entity.RoleEntity, 0),
 		// make([]*entity.UserRoleEntity, 0),
 	}, nil
 }
 
 func (m *Member_aggre) Delete() {
-	m.userroles = nil
+	m.roles = nil
 }
 
-func (m *Member_aggre) AddRoles(roleids []uuid.UUID) {
-	for roleid := range roleids {
-		temp := valobj.UserRoleValObj{roleid, m.User.ID}
-		m.userroles = append(m.userroles, temp)
-	}
-
-}
-func (m *Member_aggre) RemoveRoles(roleids ...uuid.UUID) {
-
+func (m *Member_aggre) AddRoles(roles ...*entity.RoleEntity) {
+	m.roles = append(m.roles, roles...)
 }

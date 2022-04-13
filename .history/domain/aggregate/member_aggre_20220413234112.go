@@ -36,7 +36,7 @@ func (m *Member_aggre) Delete() {
 	m.userroles = nil
 }
 
-func (m *Member_aggre) AddRoles(roleids []uuid.UUID) {
+func (m *Member_aggre) AddRoles(roleids ...uuid.UUID) {
 	for roleid := range roleids {
 		temp := valobj.UserRoleValObj{roleid, m.User.ID}
 		m.userroles = append(m.userroles, temp)
@@ -44,5 +44,5 @@ func (m *Member_aggre) AddRoles(roleids []uuid.UUID) {
 
 }
 func (m *Member_aggre) RemoveRoles(roleids ...uuid.UUID) {
-
+	m.userroles = append(m.roles, roles...)
 }

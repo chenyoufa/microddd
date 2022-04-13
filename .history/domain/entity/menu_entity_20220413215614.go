@@ -1,9 +1,6 @@
 package entity
 
-import "github.com/google/uuid"
-
-type MenuEntity struct {
-	MenuID     uuid.UUID
+type Menu struct {
 	Name       string // 菜单名称
 	Icon       string // 菜单图标
 	Router     string // 访问路由

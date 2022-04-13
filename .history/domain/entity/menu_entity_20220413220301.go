@@ -2,7 +2,7 @@ package entity
 
 import "github.com/google/uuid"
 
-type MenuEntity struct {
+type Menu struct {
 	MenuID     uuid.UUID
 	Name       string // 菜单名称
 	Icon       string // 菜单图标
