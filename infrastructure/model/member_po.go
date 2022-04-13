@@ -2,8 +2,10 @@ package model
 
 import (
 	"microddd/domain/aggregate"
+	"microddd/domain/entity"
 	"time"
 
+	"github.com/devfeel/mapper"
 	"github.com/google/uuid"
 )
 
@@ -33,13 +35,34 @@ type UserRole_po struct {
 	UpdatedAt time.Time
 }
 
-type Model struct {
+type CustomerPo struct {
 	User_po
 	Role_po
 	UserRole_po
 }
 
-func (ul *Model) ToDo() *aggregate.Member_aggre {
+func init() {
+	mapper.Register(&User_po{})
+	mapper.Register(&Role_po{})
+	mapper.Register(&UserRole_po{})
 
-	return &aggregate.Member_aggre{}
+	mapper.Register(&entity.UserEntity{})
+	mapper.Register(&entity.RoleEntity{})
+	mapper.Register(&entity.UserRoleEntity{})
+}
+
+func (ul *CustomerPo) ToDo() *aggregate.Member_aggre {
+
+	userEntity := &entity.UserEntity{}
+	roleEntity := &entity.RoleEntity{}
+	userRoleEntity := &entity.UserRoleEntity{}
+
+	mapper.AutoMapper(ul.User_po, userEntity)
+	mapper.AutoMapper(ul.User_po, roleEntity)
+	mapper.AutoMapper(ul.User_po, userRoleEntity)
+	rmodel := &aggregate.Member_aggre{
+		User: userEntity,
+	}
+
+	return rmodel
 }

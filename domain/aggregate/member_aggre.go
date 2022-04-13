@@ -8,7 +8,7 @@ import (
 )
 
 type Member_aggre struct {
-	User     entity.UserEntity
+	User     *entity.UserEntity
 	role     []*entity.RoleEntity
 	userrole []*entity.UserRoleEntity
 }
@@ -24,7 +24,7 @@ func NewMember(loginname string, email string, password string) (*Member_aggre, 
 		password,
 	}
 	return &Member_aggre{
-		user,
+		&user,
 		make([]*entity.RoleEntity, 0),
 		make([]*entity.UserRoleEntity, 0)}, nil
 }
