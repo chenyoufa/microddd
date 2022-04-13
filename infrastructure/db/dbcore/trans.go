@@ -8,6 +8,11 @@ import (
 
 type ctxTransactionKey struct{}
 
+func FromTransaction(ctx context.Context) (interface{}, bool) {
+	v := ctx.Value(ctxTransactionKey{})
+	return v, v != nil
+}
+
 func CtxWithTransaction(ctx context.Context, tx *gorm.DB) context.Context {
 	if ctx == nil {
 		ctx = context.Background()
@@ -15,14 +20,10 @@ func CtxWithTransaction(ctx context.Context, tx *gorm.DB) context.Context {
 	return context.WithValue(ctx, ctxTransactionKey{}, tx)
 }
 
-type txImpl struct{}
-
-func NewTxImpl() *txImpl {
-	return &txImpl{}
-}
-
-func (*txImpl) Transaction(ctx context.Context, fn func(txctx context.Context) error) error {
-	db := globalDB.WithContext(ctx)
+func Transaction(ctx context.Context, db *gorm.DB, fn func(txctx context.Context) error) error {
+	if _, ok := FromTransaction(ctx); ok {
+		return fn(ctx)
+	}
 	return db.Transaction(func(tx *gorm.DB) error {
 		txctx := CtxWithTransaction(ctx, tx)
 		return fn(txctx)

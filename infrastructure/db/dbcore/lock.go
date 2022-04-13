@@ -34,9 +34,9 @@ type lockDb struct {
 	leaseAge time.Duration
 }
 
-func NewLockDb(action, holder string, lease time.Duration) *lockDb {
+func NewLockDb(action, holder string, lease time.Duration, defDb *gorm.DB) *lockDb {
 	return &lockDb{
-		db:       GetDB(context.Background()),
+		db:       GetDB(context.Background(), defDb),
 		stopCh:   make(chan struct{}),
 		action:   action,
 		holder:   holder,

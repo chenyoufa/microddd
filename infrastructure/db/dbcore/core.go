@@ -19,7 +19,7 @@ import (
 )
 
 var (
-	globalDB     *gorm.DB
+	// globalDB     *gorm.DB
 	globalConfig *DBConfig
 	injectors    []func(db *gorm.DB)
 )
@@ -70,7 +70,7 @@ func Connect(cfg *DBConfig) (*gorm.DB, error) {
 	sqlDB.SetMaxOpenConns(cfg.MaxOpenConns)
 	sqlDB.SetConnMaxLifetime(time.Duration(cfg.MaxLifetime) * time.Second)
 
-	globalDB = db
+	// globalDB = db
 	globalConfig = cfg
 	registerCallback(db)
 	callInjector(db)
@@ -101,7 +101,7 @@ func callInjector(db *gorm.DB) {
 }
 
 // 如果使用跨模型事务则传参
-func GetDB(ctx context.Context) *gorm.DB {
+func GetDB(ctx context.Context, defDb *gorm.DB) *gorm.DB {
 	iface := ctx.Value(ctxTransactionKey{})
 
 	if iface != nil {
@@ -114,7 +114,12 @@ func GetDB(ctx context.Context) *gorm.DB {
 		return tx
 	}
 
-	return globalDB.WithContext(ctx)
+	return defDb
+}
+
+// Get gorm.DB.Model from context
+func GetDBWithModel(ctx context.Context, defDB *gorm.DB, m interface{}) *gorm.DB {
+	return GetDB(ctx, defDB).Model(m)
 }
 
 func GetDBConfig() DBConfig {

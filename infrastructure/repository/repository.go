@@ -17,7 +17,3 @@ func NewRepository(cdb *gorm.DB) *repository.AuthFactory {
 		MRepo: &memberRepos{db: cdb},
 	}
 }
-
-// var RepositorySet = wire.NewSet(
-// 	memberReposSet,
-// )

@@ -5,10 +5,11 @@ import (
 	"microddd/infrastructure/db/dbcore"
 
 	"github.com/pkg/errors"
+	"gorm.io/gorm"
 )
 
-func InitData() error {
-	locker := dbcore.NewLockDb("init", dbcore.GetHostname(), dbcore.DefaultLeaseAge)
+func InitData(defDB *gorm.DB) error {
+	locker := dbcore.NewLockDb("init", dbcore.GetHostname(), dbcore.DefaultLeaseAge, defDB)
 	ok, err := locker.Lock()
 	if err != nil {
 		return errors.WithStack(err)
@@ -31,6 +32,7 @@ func run() error {
 }
 
 func LoadConfig() (*dbcore.DBConfig, error) {
+
 	config := dbcore.DBConfig{
 		DbType:      "mysql",
 		DSN:         "fage:Fage501526~@(127.0.0.1:3306)/mytest",
