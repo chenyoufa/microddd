@@ -36,9 +36,9 @@ type UserRole_po struct {
 }
 
 type CustomerPo struct {
-	User_po
-	Role_po
-	UserRole_po
+	user      User_po
+	roles     []*Role_po
+	userroles []*UserRole_po
 }
 
 func init() {
@@ -54,15 +54,21 @@ func init() {
 func (ul *CustomerPo) ToDo() *aggregate.Member_aggre {
 
 	userEntity := &entity.UserEntity{}
-	roleEntity := &entity.RoleEntity{}
-	userRoleEntity := &entity.UserRoleEntity{}
+	roles := &[]*entity.RoleEntity{}
+	userRoles := &[]*entity.UserRoleEntity{}
 
-	mapper.AutoMapper(ul.User_po, userEntity)
-	mapper.AutoMapper(ul.User_po, roleEntity)
-	mapper.AutoMapper(ul.User_po, userRoleEntity)
+	mapper.AutoMapper(ul.user, userEntity)
+	mapper.AutoMapper(ul.roles, roles)
+	mapper.AutoMapper(ul.userroles, userRoles)
 	rmodel := &aggregate.Member_aggre{
 		User: userEntity,
 	}
+	setUnExportedStrField(rmodel, "roles", roles)
+	setUnExportedStrField(rmodel, "userroles", userRoles)
 
 	return rmodel
+}
+
+func (ul *CustomerPo) ToPo(aggre *aggregate.Member_aggre) {
+
 }
