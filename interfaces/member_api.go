@@ -7,14 +7,16 @@ import (
 	"github.com/google/uuid"
 )
 
-type memberApi struct {
-	*application.App
+type memberApier interface {
+	GetUser(uuid uuid.UUID)
 }
 
-func NewMemberApi(app *application.App) *memberApi {
-	return &memberApi{app}
+type memberApi struct {
+	application.MemberApper
 }
+
+// var MemberApiSet = wire.NewSet(wire.Struct(new(memberApi), "*"))
 
 func (mapi *memberApi) GetUser(uuid uuid.UUID) {
-	mapi.Mapp.Get(context.Background(), uuid)
+	mapi.Get(context.Background(), uuid)
 }

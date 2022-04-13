@@ -6,31 +6,22 @@ package main
 
 import (
 	"github.com/google/wire"
-	// "gorm.io/gorm"
 	"microddd/application"
 	"microddd/infrastructure/db/dbcore"
 	"microddd/infrastructure/db/dbinit"
 	"microddd/infrastructure/repository"
+	"microddd/interfaces"
 )
 
 //go:generate wire
 var providerSet = wire.NewSet(
-	// conf.NewViper,
-	// conf.NewAppConfigCfg,
-	// conf.NewLoggerCfg,
-	// conf.NewRedisConfig,
-	// conf.NewMongoConfig,
-	// log.NewLogger,
-	// redis.NewRedis,
-	// mongo.NewMongo,
 	dbinit.LoadConfig,
 	dbcore.Connect,
 	repository.NewRepository,
 	application.NewApps,
-	// service.NewService,
-	// adpter.NewSrv,
+	interfaces.NewApi,
 )
 
-func NewApp() (*application.App, error) {
+func NewApp() (*interfaces.Api, error) {
 	panic(wire.Build(providerSet))
 }

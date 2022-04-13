@@ -10,6 +10,10 @@ import (
 	"gorm.io/gorm"
 )
 
+// var memberReposSet = wire.NewSet(
+// 	wire.Struct(new(memberRepos)),
+// 	wire.Bind(new(repository.MemberRepoer), new(*memberRepos)))
+
 type memberRepos struct {
 	db *gorm.DB
 }

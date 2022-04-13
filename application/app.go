@@ -5,7 +5,7 @@ import (
 )
 
 type App struct {
-	Mapp memberApper
+	Mapp MemberApper
 }
 
 func NewApps(repo *repository.AuthFactory) *App {
@@ -13,3 +13,11 @@ func NewApps(repo *repository.AuthFactory) *App {
 		&memberApp{mRepo: repo.MRepo},
 	}
 }
+
+// var AppSet = wire.NewSet(
+// 	memberAppSet,
+// )
+
+// var AppSet = wire.NewSet(
+// 	wire.Struct(new(MyFoo)),
+// 	wire.Bind(new(Fooer), new(MyFoo)))

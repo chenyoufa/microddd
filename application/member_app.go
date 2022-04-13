@@ -8,13 +8,17 @@ import (
 	"github.com/google/uuid"
 )
 
-type memberApper interface {
+type MemberApper interface {
 	Get(ctx context.Context, uuid uuid.UUID) (*aggregate.Member_aggre, error)
 }
 
 type memberApp struct {
 	mRepo repository.MemberRepoer
 }
+
+// var memberAppSet = wire.NewSet(
+// 	wire.Struct(new(memberApp)),
+// 	wire.Bind(new(MemberApper), new(*memberApp)))
 
 func NewmemberApp(memberRepos repository.MemberRepoer) *memberApp {
 	return &memberApp{

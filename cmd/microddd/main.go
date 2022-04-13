@@ -1,26 +1,20 @@
 package main
 
-import (
-	"context"
-	"microddd/application"
-	"microddd/infrastructure/db/dbcore"
-	"microddd/infrastructure/db/dbinit"
-	"microddd/infrastructure/repository"
-
-	"github.com/google/uuid"
-)
+import "github.com/google/uuid"
 
 func main() {
-	// app, err := NewApp()
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// app.Get()
+	api, err := NewApp()
+	if err != nil {
+		panic(err)
+	}
+	api.MApi.GetUser(uuid.New())
 
-	config, _ := dbinit.LoadConfig()
-	db, _ := dbcore.Connect(config)
-	factory := repository.NewRepository(db)
-	app := application.NewApps(factory)
-	app.Mapp.Get(context.Background(), uuid.New())
+	// var abp application.MemberApper
+	// config, _ := dbinit.LoadConfig()
+	// db, _ := dbcore.Connect(config)
+	// factory := repository.NewRepository(db)
+	// abp = application.NewApps(factory).Mapp
+
+	// abp.Get(context.Background(), uuid.New())
 
 }

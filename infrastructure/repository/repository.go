@@ -7,7 +7,7 @@ import (
 )
 
 // type Repository struct {
-// 	MemberRepos  memberRepos
+// 	MemberRepos memberRepos
 // }
 
 func NewRepository(cdb *gorm.DB) *repository.AuthFactory {
@@ -17,3 +17,7 @@ func NewRepository(cdb *gorm.DB) *repository.AuthFactory {
 		MRepo: &memberRepos{db: cdb},
 	}
 }
+
+// var RepositorySet = wire.NewSet(
+// 	memberReposSet,
+// )
