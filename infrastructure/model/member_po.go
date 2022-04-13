@@ -1,7 +1,7 @@
 package model
 
 import (
-	"microddd/domain/entity"
+	"microddd/domain/aggregate"
 	"time"
 
 	"github.com/google/uuid"
@@ -33,6 +33,13 @@ type UserRole_po struct {
 	UpdatedAt time.Time
 }
 
-func (ul *UserRole_po) ToDo() *entity.UserRoleEntity {
-	return &entity.UserRoleEntity{}
+type Model struct {
+	User_po
+	Role_po
+	UserRole_po
+}
+
+func (ul *Model) ToDo() *aggregate.Member_aggre {
+
+	return &aggregate.Member_aggre{}
 }
