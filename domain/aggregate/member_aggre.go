@@ -18,10 +18,10 @@ func NewMember(loginname string, email string, password string) (*Member_aggre, 
 		return nil, errors.New("请输入必填项")
 	}
 	user := entity.UserEntity{
-		uuid.New(),
-		loginname,
-		email,
-		password,
+		ID:        uuid.New(),
+		LoginName: loginname,
+		Email:     email,
+		Password:  password,
 	}
 	return &Member_aggre{
 		&user,

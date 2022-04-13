@@ -36,9 +36,9 @@ type UserRole_po struct {
 }
 
 type CustomerPo struct {
-	user      User_po
-	roles     []*Role_po
-	userroles []*UserRole_po
+	User      User_po
+	Roles     []*Role_po
+	Userroles []*UserRole_po
 }
 
 func init() {
@@ -57,9 +57,9 @@ func (ul *CustomerPo) ToDo() *aggregate.Member_aggre {
 	roles := &[]*entity.RoleEntity{}
 	userRoles := &[]*entity.UserRoleEntity{}
 
-	mapper.AutoMapper(ul.user, userEntity)
-	mapper.AutoMapper(ul.roles, roles)
-	mapper.AutoMapper(ul.userroles, userRoles)
+	mapper.AutoMapper(ul.User, userEntity)
+	mapper.AutoMapper(ul.Roles, roles)
+	mapper.AutoMapper(ul.Userroles, userRoles)
 	rmodel := &aggregate.Member_aggre{
 		User: userEntity,
 	}
