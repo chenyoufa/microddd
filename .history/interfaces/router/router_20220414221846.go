@@ -7,7 +7,7 @@ import (
 )
 
 type Router struct {
-	api.WebApi
+	mapi api.WebApi
 }
 
 func (a *Router) Register(app *gin.Engine) error {
@@ -22,7 +22,7 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 	{
 		gMenu := v1.Group("menus")
 		{
-			gMenu.GET("", a.MApi.GetUser)
+			gMenu.GET("", api.WebApi.MApi.)
 
 		}
 	}

@@ -10,21 +10,20 @@ import (
 )
 
 type memberApier interface {
-	GetUser(c *gin.Context)
+	GetUser(c gin.Context)
 }
 
 type memberApi struct {
 	application.MemberApper
 }
 
-// @Tags GetUser
-// @Summary 查询数据
-// @Security ApiKeyAuth
-func (mapi *memberApi) GetUser(c *gin.Context) {
+// var MemberApiSet = wire.NewSet(wire.Struct(new(memberApi), "*"))
+
+func (mapi *memberApi) GetUser(c gin.Context) {
 	var err error
 	uuid, err := uuid.Parse(c.Query("uuid"))
 	if err != nil {
-		c.JSON(http.StatusUnprocessableEntity, "UnprocessableEntity")
+		c.JSON(http.StatusUnauthorized, "Unauthorized")
 	}
 	dto, err := mapi.Get(context.Background(), uuid)
 	if err != nil {

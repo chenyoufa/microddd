@@ -1,13 +1,11 @@
 package router
 
 import (
-	"microddd/interfaces/api"
-
 	"github.com/gin-gonic/gin"
 )
 
 type Router struct {
-	api.WebApi
+	M api.memberApier
 }
 
 func (a *Router) Register(app *gin.Engine) error {
@@ -22,7 +20,7 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 	{
 		gMenu := v1.Group("menus")
 		{
-			gMenu.GET("", a.MApi.GetUser)
+			gMenu.GET("", a.M.GetUser)
 
 		}
 	}

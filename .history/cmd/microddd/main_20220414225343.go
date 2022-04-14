@@ -45,7 +45,7 @@ func main() {
 	// model.Delete()
 	// fmt.Println(model.GetRoleIDs())
 	app := gin.Default()
-	router := router.Router{}
+	router := router.Router{users}
 	router.Register(app)
 	app.Run()
 

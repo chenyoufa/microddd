@@ -10,16 +10,15 @@ import (
 )
 
 type memberApier interface {
-	GetUser(c *gin.Context)
+	GetUser(c gin.Context)
 }
 
 type memberApi struct {
 	application.MemberApper
 }
 
-// @Tags GetUser
-// @Summary 查询数据
-// @Security ApiKeyAuth
+// var MemberApiSet = wire.NewSet(wire.Struct(new(memberApi), "*"))
+
 func (mapi *memberApi) GetUser(c *gin.Context) {
 	var err error
 	uuid, err := uuid.Parse(c.Query("uuid"))

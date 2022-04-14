@@ -20,6 +20,7 @@ type memberApi struct {
 // @Tags GetUser
 // @Summary 查询数据
 // @Security ApiKeyAuth
+// @Router /api/v1/roles [get]
 func (mapi *memberApi) GetUser(c *gin.Context) {
 	var err error
 	uuid, err := uuid.Parse(c.Query("uuid"))

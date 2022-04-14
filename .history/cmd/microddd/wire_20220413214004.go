@@ -20,7 +20,6 @@ var providerSet = wire.NewSet(
 	repository.NewRepository,
 	application.NewApps,
 	interfaces.NewApi,
-	interfaces.Router
 )
 
 func NewApp() (*interfaces.Api, error) {

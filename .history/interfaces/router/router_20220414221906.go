@@ -22,7 +22,7 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 	{
 		gMenu := v1.Group("menus")
 		{
-			gMenu.GET("", a.MApi.GetUser)
+			gMenu.GET("", a.MApi.GetUser())
 
 		}
 	}
