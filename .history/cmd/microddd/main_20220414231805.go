@@ -1,11 +1,15 @@
 package main
 
+import (
+	"github.com/twinj/uuid"
+)
+
 func main() {
 	api, err := NewApp()
 	if err != nil {
 		panic(err)
 	}
-	// api.MApi.GetUser()
+	api.MApi.GetUser(uuid.New())
 
 	// var abp application.MemberApper
 	// config, _ := dbinit.LoadConfig()

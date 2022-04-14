@@ -10,8 +10,7 @@ import (
 	"microddd/infrastructure/db/dbcore"
 	"microddd/infrastructure/db/dbinit"
 	"microddd/infrastructure/repository"
-	"microddd/interfaces/api"
-	"microddd/interfaces/router"
+	"microddd/interfaces"
 )
 
 //go:generate wire
@@ -20,10 +19,10 @@ var providerSet = wire.NewSet(
 	dbcore.Connect,
 	repository.NewRepository,
 	application.NewApps,
-	api.NewApi,
-	router.RouterSet,
+	interfaces.NewApi,
+	interfaces.Router,
 )
 
-func NewApp() (*api.WebApi, error) {
+func NewApp() (*interfaces.Api, error) {
 	panic(wire.Build(providerSet))
 }

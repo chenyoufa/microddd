@@ -21,9 +21,9 @@ var providerSet = wire.NewSet(
 	repository.NewRepository,
 	application.NewApps,
 	api.NewApi,
-	router.RouterSet,
+	interfaces.RouterSet,
 )
 
-func NewApp() (*api.WebApi, error) {
+func NewApp() (*interfaces.Api, error) {
 	panic(wire.Build(providerSet))
 }
