@@ -1,5 +1,11 @@
 package main
 
+import (
+	"microddd/domain/entity"
+
+	"github.com/twinj/uuid"
+)
+
 func main() {
 	_, err := NewAppw()
 	if err != nil {
@@ -24,12 +30,12 @@ func main() {
 	// ids = append(ids, u2)
 	// ids = append(ids, u3)
 
-	// user := entity.UserEntity{
-	// 	uuid.New(),
-	// 	"",
-	// 	"",
-	// 	"",
-	// }
+	user := entity.UserEntity{
+		uuid.New(),
+		"",
+		"",
+		"",
+	}
 	// model.User = &user
 	// model.AddRoles(ids...)
 

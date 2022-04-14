@@ -11,12 +11,13 @@ import (
 	"microddd/infrastructure/db/dbcore"
 	"microddd/infrastructure/db/dbinit"
 	"microddd/infrastructure/repository"
-	"microddd/interfaces"
+	"microddd/interfaces/api"
+	"microddd/interfaces/router"
 )
 
 // Injectors from wire.go:
 
-func NewAppw() (*interfaces.WebApi, error) {
+func NewAppw() (*api.WebApi, error) {
 	dbConfig, err := dbinit.LoadConfig()
 	if err != nil {
 		return nil, err
@@ -27,11 +28,11 @@ func NewAppw() (*interfaces.WebApi, error) {
 	}
 	authFactory := repository.NewRepository(db)
 	app := application.NewApps(authFactory)
-	webApi := interfaces.NewApi(app)
+	webApi := api.NewApi(app)
 	return webApi, nil
 }
 
 // wire.go:
 
 //go:generate wire
-var providerSet = wire.NewSet(dbinit.LoadConfig, dbcore.Connect, repository.NewRepository, application.NewApps, interfaces.NewApi)
+var providerSet = wire.NewSet(dbinit.LoadConfig, dbcore.Connect, repository.NewRepository, application.NewApps, api.NewApi, router.RouterSet)
