@@ -3,6 +3,7 @@ package model
 import (
 	"microddd/domain/aggregate"
 	"microddd/domain/entity"
+	"microddd/domain/valobj"
 	"time"
 
 	"github.com/devfeel/mapper"
@@ -16,6 +17,7 @@ type User_po struct {
 	Password  string    `gorm:"not null ;size:50"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
+	UserRoles []UserRole_po
 }
 
 type Role_po struct {
@@ -28,6 +30,8 @@ type Role_po struct {
 
 type UserRole_po struct {
 	ID        uuid.UUID `gorm:"primarykey;not null;unqua"`
+	User_po   User_po   `gorm:"foreignkey:UserID"`
+	Role_po   Role_po   `gorm:"foreignkey:UserRoID"`
 	RoleID    uuid.UUID `gorm:"not null"`
 	UserID    uuid.UUID `gorm:"not null"`
 	Status    int       `gorm:""`
@@ -36,9 +40,9 @@ type UserRole_po struct {
 }
 
 type CustomerPo struct {
-	User      User_po
-	Roles     []*Role_po
-	Userroles []*UserRole_po
+	User *User_po
+	// Roles     []*Role_po
+	Userroles []UserRole_po
 }
 
 func init() {
@@ -47,28 +51,31 @@ func init() {
 	mapper.Register(&UserRole_po{})
 
 	mapper.Register(&entity.UserEntity{})
-	mapper.Register(&entity.RoleEntity{})
-	mapper.Register(&entity.UserRoleEntity{})
+	// mapper.Register(&entity.RoleEntity{})
+	mapper.Register(&valobj.UserRoleValObj{})
 }
 
 func (ul *CustomerPo) ToDo() *aggregate.Member_aggre {
 
 	userEntity := &entity.UserEntity{}
-	roles := &[]*entity.RoleEntity{}
-	userRoles := &[]*entity.UserRoleEntity{}
+	// roles := &[]*entity.RoleEntity{}
+	userRoles := &[]*valobj.UserRoleValObj{}
 
 	mapper.AutoMapper(ul.User, userEntity)
-	mapper.AutoMapper(ul.Roles, roles)
+	// mapper.AutoMapper(ul.Roles, roles)
 	mapper.AutoMapper(ul.Userroles, userRoles)
 	rmodel := &aggregate.Member_aggre{
 		User: userEntity,
 	}
-	setUnExportedStrField(rmodel, "roles", roles)
+	// setUnExportedStrField(rmodel, "roles", roles)
 	setUnExportedStrField(rmodel, "userroles", userRoles)
 
 	return rmodel
 }
 
 func (ul *CustomerPo) ToPo(aggre *aggregate.Member_aggre) {
-
+	userEntity := aggre.User
+	userRoles := getUnExportedField(aggre, "userroles")
+	mapper.AutoMapper(userEntity, ul.User)
+	mapper.AutoMapper(userRoles, ul.Userroles)
 }

@@ -23,15 +23,67 @@ func (u *memberRepos) Get(ctx context.Context, uuid uuid.UUID) (*aggregate.Membe
 	// 	return err
 	// })
 	var user model.User_po
-	var roles []*model.Role_po
-	var relations []*model.UserRole_po
+	// var roles []*model.Role_po
+	var relations []model.UserRole_po
 	err1 := dbcore.GetDB(ctx, u.db).Where("user_id=?", uuid).Find(&relations).Error
-	err2 := dbcore.GetDB(ctx, u.db).Model(&relations).Association("Role").Find(&roles)
+	// err2 := dbcore.GetDB(ctx, u.db).Model(&relations).Association("Role").Find(&roles)
 	err3 := dbcore.GetDB(ctx, u.db).Model(&relations).Association("User").Find(&user)
-	if err1 != nil || err2 != nil || err3 != nil {
+	if err1 != nil || err3 != nil {
 		return nil, nil
 	}
-	cmpo := model.CustomerPo{User: user, Roles: roles, Userroles: relations}
+	cmpo := model.CustomerPo{User: &user, Userroles: relations}
 	cmdo := cmpo.ToDo()
 	return cmdo, err
+}
+
+func (u *memberRepos) GetList(ctx context.Context, uuid uuid.UUID) ([]*aggregate.Member_aggre, error) {
+	var users []model.User_po
+	var cmdos []*aggregate.Member_aggre
+	err := dbcore.GetDB(ctx, u.db).Where("user_id=?", uuid).Preload("UserRoles").Find(&users)
+	for _, user := range users {
+		userrole := user.UserRoles
+
+		cmpo := model.CustomerPo{User: &user, Userroles: userrole}
+		cmdo := cmpo.ToDo()
+		cmdos = append(cmdos, cmdo)
+	}
+	if err != nil {
+		return nil, err.Error
+	}
+	return cmdos, nil
+}
+func (u *memberRepos) Add(ctx context.Context, aggre *aggregate.Member_aggre) (bool, error) {
+	var customerPo = &model.CustomerPo{}
+	customerPo.ToPo(aggre)
+	var err error
+	err = dbcore.GetDB(ctx, u.db).Create(customerPo.User).Error
+	// dbcore.Transaction(ctx, u.db, func(txctx context.Context) error {
+
+	// 	err = dbcore.GetDB(ctx, u.db).Create(customerPo.Userroles).Error
+	// 	return err
+	// })
+	if err != nil {
+		return false, err
+	}
+	return true, nil
+}
+func (u *memberRepos) Edit(ctx context.Context, aggre *aggregate.Member_aggre) (bool, error) {
+	var customerPo = &model.CustomerPo{}
+	customerPo.ToPo(aggre)
+	var err error
+	err = dbcore.GetDB(ctx, u.db).Updates(customerPo.User).Error
+	// dbcore.Transaction(ctx, u.db, func(txctx context.Context) error {
+	// 	// err = dbcore.GetDB(ctx, u.db).Updates(customerPo.Userroles).Error
+	// 	return err
+	// })
+	if err != nil {
+		return false, err
+	}
+	return true, nil
+}
+
+func (u *memberRepos) Login(ctx context.Context, usname string, pwd string) (bool, error) {
+	var count int64
+	err := dbcore.GetDB(ctx, u.db).Where(" (username=? or email=?)  and password=?", usname, pwd).Find(&model.User_po{}).Count(&count).Error
+	return count > 0, err
 }

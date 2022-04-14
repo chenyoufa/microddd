@@ -4,6 +4,7 @@ import (
 	"errors"
 	"microddd/domain/entity"
 	"microddd/domain/valobj"
+	"microddd/infrastructure/utils/encrypt"
 
 	"github.com/google/uuid"
 )
@@ -22,7 +23,7 @@ func NewMember(loginname string, email string, password string) (*Member_aggre, 
 	user := entity.UserEntity{
 		ID:        uuid.New(),
 		LoginName: loginname,
-		Email:     email,
+		Email:     string(encrypt.AesEncryptCFB(email, "")),
 		Password:  password,
 	}
 	return &Member_aggre{
@@ -36,13 +37,37 @@ func (m *Member_aggre) Delete() {
 	m.userroles = nil
 }
 
-func (m *Member_aggre) AddRoles(roleids []uuid.UUID) {
-	for roleid := range roleids {
-		temp := valobj.UserRoleValObj{roleid, m.User.ID}
+func (m *Member_aggre) GetRoleIDs() []uuid.UUID {
+
+	var rids []uuid.UUID
+	for _, item := range m.userroles {
+		rids = append(rids, item.RoleID)
+	}
+	return rids
+}
+
+func (m *Member_aggre) AddRoles(roleids ...uuid.UUID) {
+	for _, roleid := range roleids {
+
+		temp := valobj.UserRoleValObj{RoleID: roleid, UserID: m.User.ID}
 		m.userroles = append(m.userroles, temp)
 	}
 
 }
 func (m *Member_aggre) RemoveRoles(roleids ...uuid.UUID) {
 
+	for index, oldroleid := range m.userroles {
+		if ok := isExit(oldroleid.RoleID, roleids); ok {
+			newlist := append(m.userroles[:index], m.userroles[(index+1):]...)
+			m.userroles = newlist
+		}
+	}
+}
+func isExit(searchval uuid.UUID, roleids []uuid.UUID) bool {
+	for _, hvaid := range roleids {
+		if hvaid == searchval {
+			return true
+		}
+	}
+	return false
 }
