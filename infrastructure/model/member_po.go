@@ -6,6 +6,8 @@ import (
 	"microddd/domain/valobj"
 	"time"
 
+	tools "microddd/infrastructure/utils/tools"
+
 	"github.com/devfeel/mapper"
 	"github.com/google/uuid"
 )
@@ -68,14 +70,14 @@ func (ul *CustomerPo) ToDo() *aggregate.Member_aggre {
 		User: userEntity,
 	}
 	// setUnExportedStrField(rmodel, "roles", roles)
-	setUnExportedStrField(rmodel, "userroles", userRoles)
+	tools.SetUnExportedStrField(rmodel, "userroles", userRoles)
 
 	return rmodel
 }
 
 func (ul *CustomerPo) ToPo(aggre *aggregate.Member_aggre) {
 	userEntity := aggre.User
-	userRoles := getUnExportedField(aggre, "userroles")
+	userRoles := tools.GetUnExportedField(aggre, "userroles")
 	mapper.AutoMapper(userEntity, ul.User)
 	mapper.AutoMapper(userRoles, ul.Userroles)
 }

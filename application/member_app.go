@@ -2,17 +2,17 @@ package application
 
 import (
 	"context"
-	"microddd/domain/aggregate"
+	"microddd/application/dto"
 	"microddd/domain/repository"
 
 	"github.com/google/uuid"
 )
 
 type MemberApper interface {
-	Get(ctx context.Context, uuid uuid.UUID) (*aggregate.Member_aggre, error)
-	GetList(ctx context.Context, uuid uuid.UUID) ([]*aggregate.Member_aggre, error)
-	Add(ctx context.Context, aggre *aggregate.Member_aggre) (bool, error)
-	Edit(ctx context.Context, aggre *aggregate.Member_aggre) (bool, error)
+	Get(ctx context.Context, uuid uuid.UUID) (*dto.Member_dto, error)
+	GetList(ctx context.Context, uuid uuid.UUID) ([]*dto.Member_dto, error)
+	Add(ctx context.Context, mdto *dto.Member_dto) (bool, error)
+	Edit(ctx context.Context, mdto *dto.Member_dto) (bool, error)
 	Login(ctx context.Context, usname string, pwd string) (bool, error)
 	Logout(ctx context.Context, usname string, pwd string) (bool, error)
 }
@@ -31,26 +31,38 @@ func NewmemberApp(memberRepos repository.MemberRepoer) *memberApp {
 	}
 }
 
-func (u *memberApp) Get(ctx context.Context, uuid uuid.UUID) (*aggregate.Member_aggre, error) {
+func (u *memberApp) Get(ctx context.Context, uuid uuid.UUID) (*dto.Member_dto, error) {
 	m, err := u.mRepo.Get(ctx, uuid)
-
+	rdto := dto.Member_dto{}
+	rdto.ToDto(m)
 	if err != nil {
 		return nil, err
 	}
-	return m, nil
+	return &rdto, nil
 }
 
-func (u *memberApp) GetList(ctx context.Context, uuid uuid.UUID) ([]*aggregate.Member_aggre, error) {
+func (u *memberApp) GetList(ctx context.Context, uuid uuid.UUID) ([]*dto.Member_dto, error) {
+
 	list, err := u.mRepo.GetList(ctx, uuid)
-	return list, err
+	var dtolist []*dto.Member_dto
+	for _, item := range list {
+		rdto := dto.Member_dto{}
+		rdto.ToDto(item)
+		dtolist = append(dtolist, &rdto)
+	}
+	if err != nil {
+		return nil, err
+	}
+	return dtolist, err
 }
-func (u *memberApp) Add(ctx context.Context, aggre *aggregate.Member_aggre) (bool, error) {
+func (u *memberApp) Add(ctx context.Context, mdto *dto.Member_dto) (bool, error) {
 
+	aggre := mdto.ToAggre()
 	isbool, err := u.mRepo.Add(ctx, aggre)
 	return isbool, err
 }
-func (u *memberApp) Edit(ctx context.Context, aggre *aggregate.Member_aggre) (bool, error) {
-
+func (u *memberApp) Edit(ctx context.Context, mdto *dto.Member_dto) (bool, error) {
+	aggre := mdto.ToAggre()
 	isbool, err := u.mRepo.Edit(ctx, aggre)
 	return isbool, err
 }
