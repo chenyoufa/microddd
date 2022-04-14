@@ -1,10 +1,11 @@
 package main
 
 func main() {
-	_, err := NewApp()
+	api, err := NewApp()
 	if err != nil {
 		panic(err)
 	}
+	api.MApi.GetUser()
 
 	// var abp application.MemberApper
 	// config, _ := dbinit.LoadConfig()
