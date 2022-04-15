@@ -1,20 +1,28 @@
 package main
 
-func main() {
-	_, err := NewApp()
-	if err != nil {
-		panic(err)
-	}
+import (
+	"context"
+	"microddd/application"
+	"microddd/infrastructure/db/dbcore"
+	"microddd/infrastructure/db/dbinit"
+	"microddd/infrastructure/repository"
 
-	// api.MApi.GetUser(uuid.New())
+	"github.com/twinj/uuid"
+)
+
+func main() {
+	// _, err := NewApp()
+	// if err != nil {
+	// 	panic(err)
+	// }
 
 	// var abp application.MemberApper
-	// config, _ := dbinit.LoadConfig()
-	// db, _ := dbcore.Connect(config)
-	// factory := repository.NewRepository(db)
-	// abp = application.NewApps(factory).Mapp
+	config, _ := dbinit.LoadConfig()
+	db, _ := dbcore.Connect(config)
+	factory := repository.NewRepository(db)
+	abp = application.NewApps(factory).Mapp
 
-	// abp.Get(context.Background(), uuid.New())
+	abp.Get(context.Background(), uuid.New())
 
 	// model := aggregate.Member_aggre{}
 

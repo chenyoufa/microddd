@@ -8,11 +8,10 @@ package main
 import (
 	"github.com/google/wire"
 	"microddd/application"
-	"microddd/domain/repository"
 	"microddd/infrastructure/db/dbcore"
 	"microddd/infrastructure/db/dbinit"
-	repository2 "microddd/infrastructure/repository"
-	"microddd/interfaces/api"
+	"microddd/infrastructure/repository"
+	"microddd/interfaces"
 )
 
 // Injectors from wire.go:
@@ -35,4 +34,4 @@ func NewAppw() (*interfaces.WebApi, error) {
 // wire.go:
 
 //go:generate wire
-var providerSet = wire.NewSet(dbinit.LoadConfig, dbcore.Connect, repository2.NewRepository, application.NewApps, api.NewApi)
+var providerSet = wire.NewSet(dbinit.LoadConfig, dbcore.Connect, repository.NewRepository, application.NewApps, interfaces.NewApi)

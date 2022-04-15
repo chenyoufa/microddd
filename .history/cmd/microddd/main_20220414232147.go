@@ -6,8 +6,6 @@ func main() {
 		panic(err)
 	}
 
-	// api.MApi.GetUser(uuid.New())
-
 	// var abp application.MemberApper
 	// config, _ := dbinit.LoadConfig()
 	// db, _ := dbcore.Connect(config)

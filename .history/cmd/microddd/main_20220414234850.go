@@ -1,12 +1,16 @@
 package main
 
+import (
+	"microddd/domain/entity"
+
+	"github.com/twinj/uuid"
+)
+
 func main() {
-	_, err := NewApp()
+	_, err := NewAppw()
 	if err != nil {
 		panic(err)
 	}
-
-	// api.MApi.GetUser(uuid.New())
 
 	// var abp application.MemberApper
 	// config, _ := dbinit.LoadConfig()
@@ -26,12 +30,12 @@ func main() {
 	// ids = append(ids, u2)
 	// ids = append(ids, u3)
 
-	// user := entity.UserEntity{
-	// 	uuid.New(),
-	// 	"",
-	// 	"",
-	// 	"",
-	// }
+	user := entity.UserEntity{
+		uuid.New(),
+		"",
+		"",
+		"",
+	}
 	// model.User = &user
 	// model.AddRoles(ids...)
 

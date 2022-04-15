@@ -1,11 +1,16 @@
 package main
 
+import (
+	"microddd/interfaces/router"
+
+	"github.com/gin-gonic/gin"
+)
+
 func main() {
-	_, err := NewApp()
+	api, err := NewApp()
 	if err != nil {
 		panic(err)
 	}
-
 	// api.MApi.GetUser(uuid.New())
 
 	// var abp application.MemberApper
@@ -39,9 +44,9 @@ func main() {
 
 	// model.Delete()
 	// fmt.Println(model.GetRoleIDs())
-	// app := gin.Default()
-	// router := router.Router{api}
-	// router.Register(app)
-	// app.Run()
+	app := gin.Default()
+	router := router.Router{}
+	router.Register(app)
+	app.Run()
 
 }

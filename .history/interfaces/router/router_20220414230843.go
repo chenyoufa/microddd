@@ -10,7 +10,7 @@ import (
 var RouterSet = wire.NewSet(wire.Struct(new(Router), "*"))
 
 type Router struct {
-	*api.WebApi
+	api.WebApi
 }
 
 func (a *Router) Register(app *gin.Engine) error {
@@ -18,7 +18,7 @@ func (a *Router) Register(app *gin.Engine) error {
 	return nil
 }
 func (a *Router) RegisterAPI(app *gin.Engine) {
-	// g := app.Group("/api")
+	g := app.Group("/api")
 	// g.Use(middleware.UserAuthMiddleware(a.Auth))
 
 	v1 := g.Group("/v1")

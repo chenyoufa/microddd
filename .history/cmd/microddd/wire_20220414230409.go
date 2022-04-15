@@ -7,12 +7,10 @@ package main
 import (
 	"github.com/google/wire"
 	"microddd/application"
-	repository2 "microddd/domain/repository"
 	"microddd/infrastructure/db/dbcore"
 	"microddd/infrastructure/db/dbinit"
 	"microddd/infrastructure/repository"
 	"microddd/interfaces"
-	// "microddd/interfaces/router"
 )
 
 //go:generate wire
@@ -22,9 +20,9 @@ var providerSet = wire.NewSet(
 	repository.NewRepository,
 	application.NewApps,
 	interfaces.NewApi,
-	// router.RouterSet,
+	interfaces.Router
 )
 
-func NewAppw() (*interfaces.WebApi, error) {
+func NewApp() (*interfaces.Api, error) {
 	panic(wire.Build(providerSet))
 }
