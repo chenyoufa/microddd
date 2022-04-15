@@ -18,7 +18,7 @@ func (a *Router) Register(app *gin.Engine) error {
 	return nil
 }
 func (a *Router) RegisterAPI(app *gin.Engine) {
-	// g := app.Group("/api")
+	g := app.Group("/api")
 	// g.Use(middleware.UserAuthMiddleware(a.Auth))
 
 	v1 := g.Group("/v1")
