@@ -7,6 +7,7 @@ package main
 import (
 	"github.com/google/wire"
 	"microddd/application"
+	repository2 "microddd/domain/repository"
 	"microddd/infrastructure/db/dbcore"
 	"microddd/infrastructure/db/dbinit"
 	"microddd/infrastructure/repository"
@@ -21,9 +22,10 @@ var providerSet = wire.NewSet(
 	repository.NewRepository,
 	application.NewApps,
 	api.NewApi,
+
 	// router.RouterSet,
 )
 
-func NewApp() (*api.WebApi, error) {
+func NewApp() (*repository2.AuthFactory, error) {
 	panic(wire.Build(providerSet))
 }
