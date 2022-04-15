@@ -9,10 +9,11 @@ import (
 )
 
 func main() {
-	// api, err := NewApp()
-	// if err != nil {
-	// 	panic(err)
-	// }
+	_, err := NewApp()
+	if err != nil {
+		panic(err)
+	}
+
 	// api.MApi.GetUser(uuid.New())
 
 	// var abp application.MemberApper
