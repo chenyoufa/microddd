@@ -37,7 +37,7 @@ func LoadConfig() (*dbcore.DBConfig, error) {
 		DbType:      "mysql",
 		DSN:         "fage:Fage501526~@(127.0.0.1:3306)/mytest",
 		AutoMigrate: true,
-		Debug:       false,
+		Debug:       true,
 	}
 	return &config, nil
 }

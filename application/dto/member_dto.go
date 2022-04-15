@@ -10,16 +10,16 @@ import (
 )
 
 type Member_dto struct {
-	ID        uuid.UUID `json:""`
-	LoginName string    `json:""`
-	Email     string    `json:""`
-	Password  string    `json:"_"`
+	ID        string `json:""`
+	LoginName string `json:""`
+	Email     string `json:""`
+	Password  string `json:""`
 	// roles []*entity.RoleEntity
-	userroles []UserRoleDto
+	Userroles []UserRoleDto
 }
 type UserRoleDto struct {
-	RoleID uuid.UUID
-	UserID uuid.UUID
+	RoleID string
+	UserID string
 }
 
 func init() {
@@ -36,17 +36,27 @@ func (m *Member_dto) ToDto(aggre *aggregate.Member_aggre) {
 	userRoles := aggre.GetRoleIDs()
 	userdtos := []UserRoleDto{}
 	for _, item := range userRoles {
-		userdtos = append(userdtos, UserRoleDto{item, aggre.User.ID})
+
+		userdtos = append(userdtos, UserRoleDto{item.String(), aggre.User.ID.String()})
 	}
 	mapper.AutoMapper(userEntity, m)
-	m.userroles = userdtos
+	m.Userroles = userdtos
+	m.Password = ""
 }
 
 func (m *Member_dto) ToAggre() *aggregate.Member_aggre {
-	var aggre *aggregate.Member_aggre
+	// var aggre *aggregate.Member_aggre
+	aggre, err := aggregate.NewMember(m.LoginName, m.Email, m.Password)
+	if err != nil {
+		return nil
+	}
 	var roleids []uuid.UUID
-	for _, item := range m.userroles {
-		roleids = append(roleids, item.RoleID)
+	if m.Userroles == nil {
+		m.Userroles = make([]UserRoleDto, 0)
+	}
+	for _, item := range m.Userroles {
+		uid, _ := uuid.Parse(item.RoleID)
+		roleids = append(roleids, uid)
 	}
 	mapper.AutoMapper(m, aggre)
 

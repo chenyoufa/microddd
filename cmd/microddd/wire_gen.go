@@ -8,16 +8,16 @@ package main
 import (
 	"github.com/google/wire"
 	"microddd/application"
-	"microddd/domain/repository"
 	"microddd/infrastructure/db/dbcore"
 	"microddd/infrastructure/db/dbinit"
-	repository2 "microddd/infrastructure/repository"
+	"microddd/infrastructure/repository"
 	"microddd/interfaces/api"
+	"microddd/interfaces/router"
 )
 
 // Injectors from wire.go:
 
-func NewApp() (*repository.AuthFactory, error) {
+func NewApp() (*router.Router, error) {
 	dbConfig, err := dbinit.LoadConfig()
 	if err != nil {
 		return nil, err
@@ -26,11 +26,16 @@ func NewApp() (*repository.AuthFactory, error) {
 	if err != nil {
 		return nil, err
 	}
-	authFactory := repository2.NewRepository(db)
-	return authFactory, nil
+	authFactory := repository.NewRepository(db)
+	app := application.NewApps(authFactory)
+	webApi := api.NewApi(app)
+	routerRouter := &router.Router{
+		WebApi: webApi,
+	}
+	return routerRouter, nil
 }
 
 // wire.go:
 
 //go:generate wire
-var providerSet = wire.NewSet(dbinit.LoadConfig, dbcore.Connect, repository2.NewRepository, application.NewApps, api.NewApi)
+var providerSet = wire.NewSet(dbinit.LoadConfig, dbcore.Connect, repository.NewRepository, application.NewApps, api.NewApi, router.RouterSet)

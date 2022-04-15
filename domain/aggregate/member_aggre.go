@@ -47,6 +47,9 @@ func (m *Member_aggre) GetRoleIDs() []uuid.UUID {
 }
 
 func (m *Member_aggre) AddRoles(roleids ...uuid.UUID) {
+	if len(roleids) <= 0 {
+		return
+	}
 	for _, roleid := range roleids {
 
 		temp := valobj.UserRoleValObj{RoleID: roleid, UserID: m.User.ID}

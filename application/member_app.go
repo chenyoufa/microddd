@@ -9,12 +9,13 @@ import (
 )
 
 type MemberApper interface {
-	Get(ctx context.Context, uuid uuid.UUID) (*dto.Member_dto, error)
-	GetList(ctx context.Context, uuid uuid.UUID) ([]*dto.Member_dto, error)
+	Get(ctx context.Context, uidstr string) (*dto.Member_dto, error)
+	GetList(ctx context.Context, uidstr string) ([]*dto.Member_dto, error)
 	Add(ctx context.Context, mdto *dto.Member_dto) (bool, error)
 	Edit(ctx context.Context, mdto *dto.Member_dto) (bool, error)
 	Login(ctx context.Context, usname string, pwd string) (bool, error)
 	Logout(ctx context.Context, usname string, pwd string) (bool, error)
+	Remove(ctx context.Context, uidstr string) (bool, error)
 }
 
 type memberApp struct {
@@ -31,8 +32,9 @@ func NewmemberApp(memberRepos repository.MemberRepoer) *memberApp {
 	}
 }
 
-func (u *memberApp) Get(ctx context.Context, uuid uuid.UUID) (*dto.Member_dto, error) {
-	m, err := u.mRepo.Get(ctx, uuid)
+func (u *memberApp) Get(ctx context.Context, uidstr string) (*dto.Member_dto, error) {
+	uid, _ := uuid.Parse(uidstr)
+	m, err := u.mRepo.Get(ctx, uid)
 	rdto := dto.Member_dto{}
 	rdto.ToDto(m)
 	if err != nil {
@@ -41,9 +43,9 @@ func (u *memberApp) Get(ctx context.Context, uuid uuid.UUID) (*dto.Member_dto, e
 	return &rdto, nil
 }
 
-func (u *memberApp) GetList(ctx context.Context, uuid uuid.UUID) ([]*dto.Member_dto, error) {
-
-	list, err := u.mRepo.GetList(ctx, uuid)
+func (u *memberApp) GetList(ctx context.Context, uidstr string) ([]*dto.Member_dto, error) {
+	uid, _ := uuid.Parse(uidstr)
+	list, err := u.mRepo.GetList(ctx, uid)
 	var dtolist []*dto.Member_dto
 	for _, item := range list {
 		rdto := dto.Member_dto{}
@@ -72,5 +74,18 @@ func (u *memberApp) Login(ctx context.Context, usname string, pwd string) (bool,
 }
 func (u *memberApp) Logout(ctx context.Context, usname string, pwd string) (bool, error) {
 
+	return true, nil
+}
+func (u *memberApp) Remove(ctx context.Context, uidstr string) (bool, error) {
+	uid, _ := uuid.Parse(uidstr)
+	model, err := u.mRepo.Get(ctx, uid)
+	if err != nil {
+		return false, err
+	}
+	model.Delete()
+	ok, err := u.mRepo.Edit(ctx, model)
+	if err != nil || !ok {
+		return false, err
+	}
 	return true, nil
 }

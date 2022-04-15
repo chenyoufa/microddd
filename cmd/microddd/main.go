@@ -1,7 +1,11 @@
 package main
 
+import (
+	"github.com/gin-gonic/gin"
+)
+
 func main() {
-	_, err := NewApp()
+	new_router, err := NewApp()
 	if err != nil {
 		panic(err)
 	}
@@ -39,9 +43,9 @@ func main() {
 
 	// model.Delete()
 	// fmt.Println(model.GetRoleIDs())
-	// app := gin.Default()
+	app := gin.Default()
 	// router := router.Router{api}
-	// router.Register(app)
-	// app.Run()
+	new_router.Register(app)
+	app.Run()
 
 }

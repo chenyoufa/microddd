@@ -22,9 +22,9 @@ func (u *memberRepos) Get(ctx context.Context, uuid uuid.UUID) (*aggregate.Membe
 
 	// 	return err
 	// })
-	var user model.User_po
+	var user model.Userpo
 	// var roles []*model.Role_po
-	var relations []model.UserRole_po
+	var relations []model.UserRolepo
 	err1 := dbcore.GetDB(ctx, u.db).Where("user_id=?", uuid).Find(&relations).Error
 	// err2 := dbcore.GetDB(ctx, u.db).Model(&relations).Association("Role").Find(&roles)
 	err3 := dbcore.GetDB(ctx, u.db).Model(&relations).Association("User").Find(&user)
@@ -37,7 +37,7 @@ func (u *memberRepos) Get(ctx context.Context, uuid uuid.UUID) (*aggregate.Membe
 }
 
 func (u *memberRepos) GetList(ctx context.Context, uuid uuid.UUID) ([]*aggregate.Member_aggre, error) {
-	var users []model.User_po
+	var users []model.Userpo
 	var cmdos []*aggregate.Member_aggre
 	err := dbcore.GetDB(ctx, u.db).Where("user_id=?", uuid).Preload("UserRoles").Find(&users)
 	for _, user := range users {
@@ -84,6 +84,6 @@ func (u *memberRepos) Edit(ctx context.Context, aggre *aggregate.Member_aggre) (
 
 func (u *memberRepos) Login(ctx context.Context, usname string, pwd string) (bool, error) {
 	var count int64
-	err := dbcore.GetDB(ctx, u.db).Where(" (username=? or email=?)  and password=?", usname, pwd).Find(&model.User_po{}).Count(&count).Error
+	err := dbcore.GetDB(ctx, u.db).Where(" (username=? or email=?)  and password=?", usname, pwd).Find(&model.Userpo{}).Count(&count).Error
 	return count > 0, err
 }

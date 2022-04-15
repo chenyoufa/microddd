@@ -9,48 +9,46 @@ import (
 	tools "microddd/infrastructure/utils/tools"
 
 	"github.com/devfeel/mapper"
-	"github.com/google/uuid"
+	"gorm.io/gorm"
 )
 
-type User_po struct {
-	ID        uuid.UUID `gorm:"primarykey;not null;unqua"`
-	LoginName string    `gorm:"not null; "`
-	Email     string    `gorm:"not null; size:30"`
-	Password  string    `gorm:"not null ;size:50"`
+type Userpo struct {
+	Uid       uint   `gorm:"primarykey"`
+	LoginName string `gorm:"not null; "`
+	Email     string `gorm:"not null; size:30"`
+	Password  string `gorm:"not null ;size:50"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	UserRoles []UserRole_po
+	UserRoles []UserRolepo `gorm:"foreignkey:UserId;association_foreignkey:Uid"`
 }
 
-type Role_po struct {
-	ID        uuid.UUID `gorm:"primarykey;not null;unqua"`
-	RoleName  string    `gorm:"size:20"`
-	Remark    string    `gorm:"size:200"`
+type Rolepo struct {
+	gorm.Model
+	RoleName  string `gorm:"size:20"`
+	Remark    string `gorm:"size:200"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
 
-type UserRole_po struct {
-	ID        uuid.UUID `gorm:"primarykey;not null;unqua"`
-	User_po   User_po   `gorm:"foreignkey:UserID"`
-	Role_po   Role_po   `gorm:"foreignkey:UserRoID"`
-	RoleID    uuid.UUID `gorm:"not null"`
-	UserID    uuid.UUID `gorm:"not null"`
-	Status    int       `gorm:""`
+type UserRolepo struct {
+	gorm.Model
+	Status int
+	// Userpo    Userpo `gorm:"foreignkey:UserId;association_foreignkey:Id"`
+	UserId    uint
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
 
 type CustomerPo struct {
-	User *User_po
+	User *Userpo
 	// Roles     []*Role_po
-	Userroles []UserRole_po
+	Userroles []UserRolepo
 }
 
 func init() {
-	mapper.Register(&User_po{})
-	mapper.Register(&Role_po{})
-	mapper.Register(&UserRole_po{})
+	mapper.Register(&Userpo{})
+	mapper.Register(&Rolepo{})
+	mapper.Register(&UserRolepo{})
 
 	mapper.Register(&entity.UserEntity{})
 	// mapper.Register(&entity.RoleEntity{})
