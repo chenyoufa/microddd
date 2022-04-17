@@ -9,75 +9,101 @@ import (
 	tools "microddd/infrastructure/utils/tools"
 
 	"github.com/devfeel/mapper"
-	"github.com/google/uuid"
 )
 
-type User_po struct {
-	ID        uuid.UUID `gorm:"primarykey;not null;unqua"`
-	LoginName string    `gorm:"not null; "`
-	Email     string    `gorm:"not null; size:30"`
-	Password  string    `gorm:"not null ;size:50"`
+type Userpo struct {
+	ID        string `gorm:"primarykey;size:64"`
+	LoginName string `gorm:"not null; "`
+	Email     string `gorm:"not null; size:30"`
+	Password  string `gorm:"not null ;size:50"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	UserRoles []UserRole_po
+
+	// UserRoles []UserRolepo `gorm:"foreignkey:UserID;association_foreignkey:ID"`
 }
 
-type Role_po struct {
-	ID        uuid.UUID `gorm:"primarykey;not null;unqua"`
-	RoleName  string    `gorm:"size:20"`
-	Remark    string    `gorm:"size:200"`
+type Rolepo struct {
+	ID        string `gorm:"primarykey;"`
+	RoleName  string `gorm:"size:20"`
+	Remark    string `gorm:"size:200"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
 
-type UserRole_po struct {
-	ID        uuid.UUID `gorm:"primarykey;not null;unqua"`
-	User_po   User_po   `gorm:"foreignkey:UserID"`
-	Role_po   Role_po   `gorm:"foreignkey:UserRoID"`
-	RoleID    uuid.UUID `gorm:"not null"`
-	UserID    uuid.UUID `gorm:"not null"`
-	Status    int       `gorm:""`
+type UserRolepo struct {
+	ID        string `gorm:"primarykey;size:64"`
+	Status    int
+	Rolepo    Userpo `gorm:"foreignkey:RoleID;association_foreignkey:ID"`
+	UserID    string `gorm:"size:64"`
+	RoleID    string `gorm:"size:64"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
 
 type CustomerPo struct {
-	User *User_po
+	User *Userpo
 	// Roles     []*Role_po
-	Userroles []UserRole_po
+	Userroles []UserRolepo
 }
 
 func init() {
-	mapper.Register(&User_po{})
-	mapper.Register(&Role_po{})
-	mapper.Register(&UserRole_po{})
+	mapper.Register(&Userpo{})
+	mapper.Register(&Rolepo{})
+	mapper.Register(&UserRolepo{})
 
 	mapper.Register(&entity.UserEntity{})
 	// mapper.Register(&entity.RoleEntity{})
 	mapper.Register(&valobj.UserRoleValObj{})
 }
 
-func (ul *CustomerPo) ToDo() *aggregate.Member_aggre {
+func (ul *Userpo) ToDo() *aggregate.Member_aggre {
 
 	userEntity := &entity.UserEntity{}
-	// roles := &[]*entity.RoleEntity{}
-	userRoles := &[]*valobj.UserRoleValObj{}
+	userRoles := []valobj.UserRoleValObj{}
+	mapper.AutoMapper(ul, userEntity)
+	// for _, item := range ul.UserRoles {
+	// 	temp := valobj.UserRoleValObj{RoleID: item.RoleID, UserID: item.UserID}
+	// 	userRoles = append(userRoles, temp)
+	// }
 
-	mapper.AutoMapper(ul.User, userEntity)
-	// mapper.AutoMapper(ul.Roles, roles)
-	mapper.AutoMapper(ul.Userroles, userRoles)
+	// log.Println("userEntity1:", userEntity)
+	// log.Println("userRoles1:", userRoles)
+
 	rmodel := &aggregate.Member_aggre{
 		User: userEntity,
 	}
 	// setUnExportedStrField(rmodel, "roles", roles)
 	tools.SetUnExportedStrField(rmodel, "userroles", userRoles)
-
+	// log.Println("rmodel:", *rmodel.User)
 	return rmodel
 }
 
 func (ul *CustomerPo) ToPo(aggre *aggregate.Member_aggre) {
-	userEntity := aggre.User
-	userRoles := tools.GetUnExportedField(aggre, "userroles")
-	mapper.AutoMapper(userEntity, ul.User)
-	mapper.AutoMapper(userRoles, ul.Userroles)
+	userAggre := aggre.User
+	// userRoles := tools.GetUnExportedField(aggre, "userroles")
+	roleids := aggre.GetRoleIDs()
+	// uluser := &Userpo{}
+	ulroles := []UserRolepo{}
+
+	if len(roleids) > 0 {
+		for _, item := range roleids {
+			temp := UserRolepo{UserID: userAggre.ID, RoleID: item}
+			ulroles = append(ulroles, temp)
+		}
+		ul.Userroles = ulroles
+	}
+	// mapper.AutoMapper(userAggre, uluser)
+
+	ul.User = &Userpo{
+		ID:        userAggre.ID,
+		LoginName: userAggre.LoginName,
+		Email:     userAggre.Email,
+		Password:  userAggre.Email,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	}
+
+	// mapper.AutoMapper(userRoles, ulrole)
+	// log.Println("userRoles:", ul)
+
 }
