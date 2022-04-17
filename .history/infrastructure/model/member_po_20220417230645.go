@@ -16,7 +16,7 @@ type Userpo struct {
 	Password    string `gorm:"not null ;size:50"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
-	UserRolepos []*UserRolepo `gorm:"foreignkey:UserID;association_foreignkey:ID"`
+	UserRolepos []UserRolepo `gorm:"foreignkey:UserID;association_foreignkey:ID"`
 }
 
 type Rolepo struct {
@@ -36,7 +36,7 @@ type UserRolepo struct {
 type CustomerPo struct {
 	User *Userpo
 	// Roles     []*Role_po
-	Userroles []UserRolepo
+	// Userroles []UserRolepo
 }
 
 func init() {
@@ -84,7 +84,7 @@ func (ul *CustomerPo) ToPo(aggre *aggregate.Member_aggre) {
 			temp := UserRolepo{UserID: userAggre.ID, RoleID: item}
 			ulroles = append(ulroles, temp)
 		}
-		ul.Userroles = ulroles
+		ul.User.UserRolepos = ulroles
 	}
 	// mapper.AutoMapper(userAggre, uluser)
 

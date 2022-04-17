@@ -75,17 +75,11 @@ func (u *memberRepos) Add(ctx context.Context, aggre *aggregate.Member_aggre) (b
 	// 	// UserRoles: nil,
 	// }
 	// log.Println(userpo)
-	userroles := model.UserRolepo{}
-	dbcore.GetDB(ctx, u.db).Where("User_ID=?", customerPo.User.ID).Find(&userroles)
+	roles := model.UserRolepo{}
+	dbcore.GetDB(ctx, u.db).Where("User_ID=?", customerPo.User.ID).Find(&roles)
 
-	dbcore.Transaction(ctx, u.db, func(txctx context.Context) error {
-
-		dbcore.GetDB(ctx, u.db).Delete(userroles)
-		customerPo.User.UserRolepos = append(customerPo.User.UserRolepos, &userroles)
-		err = dbcore.GetDB(ctx, u.db).Debug().Create(customerPo.User).Error
-
-		return err
-	})
+	customerPo.User.UserRolepos = append(customerPo.User.UserRolepos, &roles)
+	err = dbcore.GetDB(ctx, u.db).Debug().Create(customerPo.User).Error
 	// dbcore.Transaction(ctx, u.db, func(txctx context.Context) error {
 
 	// 	err = dbcore.GetDB(ctx, u.db).Create(customerPo.Userroles).Error

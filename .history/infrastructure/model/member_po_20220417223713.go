@@ -10,33 +10,38 @@ import (
 )
 
 type Userpo struct {
-	ID          string `gorm:"primarykey;size:64"`
-	LoginName   string `gorm:"not null; "`
-	Email       string `gorm:"not null; size:30"`
-	Password    string `gorm:"not null ;size:50"`
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
-	UserRolepos []*UserRolepo `gorm:"foreignkey:UserID;association_foreignkey:ID"`
+	ID        string `gorm:"primarykey;size:64"`
+	LoginName string `gorm:"not null; "`
+	Email     string `gorm:"not null; size:30"`
+	Password  string `gorm:"not null ;size:50"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	Rolepos   []*Rolepo `gorm:"many2many:user_Rolepos;"`
 }
 
 type Rolepo struct {
-	ID          string        `gorm:"primarykey;"`
-	RoleName    string        `gorm:"size:20"`
-	Remark      string        `gorm:"size:200"`
-	UserRolepos []*UserRolepo `gorm:"foreignkey:RoleID;association_foreignkey:ID"`
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
+	ID        string    `gorm:"primarykey;"`
+	RoleName  string    `gorm:"size:20"`
+	Remark    string    `gorm:"size:200"`
+	Userpo    []*Userpo `gorm:"many2many:user_Rolepos;"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
-type UserRolepo struct {
-	UserID string `gorm:"size:64"`
-	RoleID string `gorm:"size:64"`
-}
+// type UserRolepo struct {
+// 	ID        string `gorm:"primarykey;size:64"`
+// 	Status    int
+// 	Rolepo    Userpo `gorm:"foreignkey:RoleID;association_foreignkey:ID"`
+// 	UserID    string `gorm:"foreignkey:UserID;association_foreignkey:ID"`
+// 	RoleID    string `gorm:"size:64"`
+// 	CreatedAt time.Time
+// 	UpdatedAt time.Time
+// }
 
 type CustomerPo struct {
 	User *Userpo
 	// Roles     []*Role_po
-	Userroles []UserRolepo
+	// Userroles []UserRolepo
 }
 
 func init() {
@@ -75,17 +80,17 @@ func (ul *Userpo) ToDo() *aggregate.Member_aggre {
 func (ul *CustomerPo) ToPo(aggre *aggregate.Member_aggre) {
 	userAggre := aggre.User
 	// userRoles := tools.GetUnExportedField(aggre, "userroles")
-	roleids := aggre.GetRoleIDs()
+	// roleids := aggre.GetRoleIDs()
 	// uluser := &Userpo{}
-	ulroles := []UserRolepo{}
+	// ulroles := []Rolepo{}
 
-	if len(roleids) > 0 {
-		for _, item := range roleids {
-			temp := UserRolepo{UserID: userAggre.ID, RoleID: item}
-			ulroles = append(ulroles, temp)
-		}
-		ul.Userroles = ulroles
-	}
+	// if len(roleids) > 0 {
+	// 	for _, item := range roleids {
+	// 		temp := Rolepo{UserID: userAggre.ID, RoleID: item}
+	// 		// 	ulroles = append(ulroles, temp)
+	// 	}
+	// 	// ul.Userroles = ulroles
+	// }
 	// mapper.AutoMapper(userAggre, uluser)
 
 	ul.User = &Userpo{

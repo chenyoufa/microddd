@@ -77,12 +77,12 @@ func (ul *CustomerPo) ToPo(aggre *aggregate.Member_aggre) {
 	// userRoles := tools.GetUnExportedField(aggre, "userroles")
 	roleids := aggre.GetRoleIDs()
 	// uluser := &Userpo{}
-	ulroles := []UserRolepo{}
+	ulroles := []*UserRolepo{}
 
 	if len(roleids) > 0 {
 		for _, item := range roleids {
 			temp := UserRolepo{UserID: userAggre.ID, RoleID: item}
-			ulroles = append(ulroles, temp)
+			ulroles = append(ulroles, &temp)
 		}
 		ul.Userroles = ulroles
 	}

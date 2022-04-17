@@ -36,7 +36,7 @@ type UserRolepo struct {
 type CustomerPo struct {
 	User *Userpo
 	// Roles     []*Role_po
-	Userroles []UserRolepo
+	// Userroles []UserRolepo
 }
 
 func init() {
@@ -77,14 +77,14 @@ func (ul *CustomerPo) ToPo(aggre *aggregate.Member_aggre) {
 	// userRoles := tools.GetUnExportedField(aggre, "userroles")
 	roleids := aggre.GetRoleIDs()
 	// uluser := &Userpo{}
-	ulroles := []UserRolepo{}
+	// ulroles := []Rolepo{}
 
 	if len(roleids) > 0 {
 		for _, item := range roleids {
-			temp := UserRolepo{UserID: userAggre.ID, RoleID: item}
-			ulroles = append(ulroles, temp)
+			temp := Rolepo{UserID: userAggre.ID, RoleID: item}
+			// 	ulroles = append(ulroles, temp)
 		}
-		ul.Userroles = ulroles
+		// ul.Userroles = ulroles
 	}
 	// mapper.AutoMapper(userAggre, uluser)
 

@@ -6,32 +6,40 @@ import (
 	"microddd/domain/valobj"
 	"time"
 
+	tools "microddd/infrastructure/utils/tools"
+
 	"github.com/devfeel/mapper"
 )
 
 type Userpo struct {
-	ID          string `gorm:"primarykey;size:64"`
-	LoginName   string `gorm:"not null; "`
-	Email       string `gorm:"not null; size:30"`
-	Password    string `gorm:"not null ;size:50"`
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
-	UserRolepos []*UserRolepo `gorm:"foreignkey:UserID;association_foreignkey:ID"`
+	ID        string `gorm:"primarykey;size:64"`
+	LoginName string `gorm:"not null; "`
+	Email     string `gorm:"not null; size:30"`
+	Password  string `gorm:"not null ;size:50"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	Rolepos   []*Rolepo `gorm:"many2many:user_Rolepos;"`
 }
 
 type Rolepo struct {
-	ID          string        `gorm:"primarykey;"`
-	RoleName    string        `gorm:"size:20"`
-	Remark      string        `gorm:"size:200"`
-	UserRolepos []*UserRolepo `gorm:"foreignkey:RoleID;association_foreignkey:ID"`
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
+	ID        string    `gorm:"primarykey;"`
+	RoleName  string    `gorm:"size:20"`
+	Remark    string    `gorm:"size:200"`
+	Userpo    []*Userpo `gorm:"many2many:user_Rolepos;"`
+	UserID    string
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
-type UserRolepo struct {
-	UserID string `gorm:"size:64"`
-	RoleID string `gorm:"size:64"`
-}
+// type UserRolepo struct {
+// 	ID        string `gorm:"primarykey;size:64"`
+// 	Status    int
+// 	Rolepo    Userpo `gorm:"foreignkey:RoleID;association_foreignkey:ID"`
+// 	UserID    string `gorm:"foreignkey:UserID;association_foreignkey:ID"`
+// 	RoleID    string `gorm:"size:64"`
+// 	CreatedAt time.Time
+// 	UpdatedAt time.Time
+// }
 
 type CustomerPo struct {
 	User *Userpo
@@ -42,7 +50,7 @@ type CustomerPo struct {
 func init() {
 	mapper.Register(&Userpo{})
 	mapper.Register(&Rolepo{})
-	// mapper.Register(&UserRolepo{})
+	mapper.Register(&UserRolepo{})
 
 	mapper.Register(&entity.UserEntity{})
 	// mapper.Register(&entity.RoleEntity{})
@@ -52,11 +60,10 @@ func init() {
 func (ul *Userpo) ToDo() *aggregate.Member_aggre {
 
 	userEntity := &entity.UserEntity{}
-
-	// userRoles := []valobj.UserRoleValObj{}
+	userRoles := []valobj.UserRoleValObj{}
 	mapper.AutoMapper(ul, userEntity)
-	// for _, item := range ul.Rolepos {
-	// 	temp := valobj.UserRoleValObj{RoleID: item.ID, UserID: item.UserID}
+	// for _, item := range ul.UserRoles {
+	// 	temp := valobj.UserRoleValObj{RoleID: item.RoleID, UserID: item.UserID}
 	// 	userRoles = append(userRoles, temp)
 	// }
 
@@ -67,7 +74,7 @@ func (ul *Userpo) ToDo() *aggregate.Member_aggre {
 		User: userEntity,
 	}
 	// setUnExportedStrField(rmodel, "roles", roles)
-	// tools.SetUnExportedStrField(rmodel, "userroles", userRoles)
+	tools.SetUnExportedStrField(rmodel, "userroles", userRoles)
 	// log.Println("rmodel:", *rmodel.User)
 	return rmodel
 }

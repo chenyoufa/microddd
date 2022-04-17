@@ -36,7 +36,7 @@ type UserRolepo struct {
 type CustomerPo struct {
 	User *Userpo
 	// Roles     []*Role_po
-	Userroles []UserRolepo
+	// Userroles []UserRolepo
 }
 
 func init() {
