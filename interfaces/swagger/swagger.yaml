@@ -1,0 +1,108 @@
+definitions:
+  dto.Member_dto:
+    properties:
+      email:
+        type: string
+      id:
+        type: string
+      loginName:
+        type: string
+      password:
+        type: string
+      userroles:
+        description: roles []*entity.RoleEntity
+        items:
+          $ref: '#/definitions/dto.UserRoleDto'
+        type: array
+    type: object
+  dto.UserRoleDto:
+    properties:
+      roleID:
+        type: string
+      userID:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /api/v1/member:
+    get:
+      parameters:
+      - description: 唯一标识
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: ""
+      security:
+      - ApiKeyAuth: []
+      summary: 查询指定数据列表
+      tags:
+      - UserAPI
+    post:
+      parameters:
+      - description: 交款查询参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.Member_dto'
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: boolean
+      security:
+      - ApiKeyAuth: []
+      summary: 新增数据
+      tags:
+      - UserAPI
+  /api/v1/member/{id}:
+    delete:
+      parameters:
+      - description: 唯一标识
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: ""
+      security:
+      - ApiKeyAuth: []
+      summary: 删除指定数据
+      tags:
+      - UserAPI
+    get:
+      parameters:
+      - description: 标识
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: ""
+      security:
+      - ApiKeyAuth: []
+      summary: 查询指定数据2
+      tags:
+      - UserAPI
+    put:
+      parameters:
+      - description: 唯一标识
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: ""
+      security:
+      - ApiKeyAuth: []
+      summary: 更新数据
+      tags:
+      - UserAPI
+swagger: "2.0"
