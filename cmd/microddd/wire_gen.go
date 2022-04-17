@@ -8,6 +8,7 @@ package main
 import (
 	"github.com/google/wire"
 	"microddd/application"
+	"microddd/domain/repository"
 	"microddd/infrastructure/db/dbcore"
 	"microddd/infrastructure/db/dbinit"
 	"microddd/infrastructure/repository"
