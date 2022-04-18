@@ -35,7 +35,7 @@ func LoadConfig() (*dbcore.DBConfig, error) {
 
 	config := dbcore.DBConfig{
 		DbType:      "mysql",
-		DSN:         "fage:Fage501526~@(127.0.0.1:3306)/mytest",
+		DSN:         "fage:Fage501526~@(127.0.0.1:3306)/mytest?charset=utf8&parseTime=true", //时间格式会影响
 		AutoMigrate: true,
 		Debug:       true,
 	}

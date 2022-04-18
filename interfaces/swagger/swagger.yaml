@@ -58,15 +58,31 @@ paths:
       - ApiKeyAuth: []
       summary: 新增数据
       tags:
-      - UserAPI
+      - UserAPI  ok
+    put:
+      parameters:
+      - description: 修改参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.Member_dto'
+      responses:
+        "200":
+          description: ""
+      security:
+      - ApiKeyAuth: []
+      summary: 更新数据
+      tags:
+      - UserAPI  ok
   /api/v1/member/{id}:
     delete:
       parameters:
-      - description: 唯一标识
+      - description: 要删除的数据ID
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       responses:
         "200":
           description: ""
@@ -89,20 +105,5 @@ paths:
       - ApiKeyAuth: []
       summary: 查询指定数据2
       tags:
-      - UserAPI
-    put:
-      parameters:
-      - description: 唯一标识
-        in: path
-        name: id
-        required: true
-        type: integer
-      responses:
-        "200":
-          description: ""
-      security:
-      - ApiKeyAuth: []
-      summary: 更新数据
-      tags:
-      - UserAPI
+      - UserAPI  ok
 swagger: "2.0"

@@ -2,6 +2,7 @@ package application
 
 import (
 	"context"
+	"log"
 	"microddd/application/dto"
 	"microddd/domain/repository"
 
@@ -77,11 +78,13 @@ func (u *memberApp) Logout(ctx context.Context, usname string, pwd string) (bool
 	return true, nil
 }
 func (u *memberApp) Remove(ctx context.Context, uid uuid.UUID) (bool, error) {
+
 	model, err := u.mRepo.Get(ctx, uid)
+	log.Println("model:", model)
+	model.User.Status = -1
 	if err != nil {
 		return false, err
 	}
-	model.Delete()
 	ok, err := u.mRepo.Edit(ctx, model)
 	if err != nil || !ok {
 		return false, err

@@ -2,10 +2,8 @@ package dto
 
 import (
 	"microddd/domain/aggregate"
-	"microddd/domain/entity"
-	"microddd/domain/valobj"
 
-	"github.com/devfeel/mapper"
+	"github.com/google/uuid"
 )
 
 type Member_dto struct {
@@ -13,6 +11,7 @@ type Member_dto struct {
 	LoginName string `json:""`
 	Email     string `json:""`
 	Password  string `json:""`
+	Status    int    `json:""`
 	// roles []*entity.RoleEntity
 	Userroles []UserRoleDto
 }
@@ -21,47 +20,40 @@ type UserRoleDto struct {
 	UserID string
 }
 
-func init() {
-	mapper.Register(&Member_dto{})
-	mapper.Register(&UserRoleDto{})
-
-	mapper.Register(&entity.UserEntity{})
-	// mapper.Register(&entity.RoleEntity{})
-	mapper.Register(&valobj.UserRoleValObj{})
-}
-
 func (m *Member_dto) ToDto(aggre *aggregate.Member_aggre) {
-	userEntity := aggre.User
 	userRoles := aggre.GetRoleIDs()
 	userdtos := []UserRoleDto{}
 	for _, item := range userRoles {
-
 		userdtos = append(userdtos, UserRoleDto{item.String(), aggre.User.ID.String()})
 	}
-	// mapper.AutoMapper(&userEntity, &m)
-	m.Email = userEntity.Email
-	m.ID = userEntity.ID
-	m.LoginName = userEntity.LoginName
+	m.ID = aggre.User.ID.String()
+	m.LoginName = aggre.User.Email
+	m.Email = aggre.User.Email
 	m.Userroles = userdtos
+	m.Status = aggre.User.Status
 	m.Password = ""
 }
 
 func (m *Member_dto) ToAggre() *aggregate.Member_aggre {
-	// var aggre *aggregate.Member_aggre
 	aggre, err := aggregate.NewMember(m.LoginName, m.Email, m.Password)
 	if err != nil {
 		return nil
 	}
-	var roleids []string
-	if m.Userroles == nil {
-		m.Userroles = make([]UserRoleDto, 0)
+	var roleids []uuid.UUID
+	// if m.Userroles == nil {
+	// 	m.Userroles = make([]UserRoleDto, 0)
+	// }
+	if len(m.Userroles[0].RoleID) > 0 {
+		for _, item := range m.Userroles {
+			uid, _ := uuid.Parse(item.RoleID)
+			roleids = append(roleids, uid)
+		}
 	}
-	for _, item := range m.Userroles {
-		// uid, _ := uuid.Parse(item.RoleID)
-		roleids = append(roleids, item.RoleID)
-	}
-	mapper.AutoMapper(m, aggre)
-
+	aggre.User.LoginName = m.LoginName
+	aggre.User.Email = m.Email
+	aggre.User.Password = m.Password
+	aggre.User.ID, _ = uuid.Parse(m.ID)
+	aggre.User.Status = m.Status
 	aggre.AddRoles(roleids...)
 	return aggre
 }

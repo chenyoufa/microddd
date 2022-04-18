@@ -33,8 +33,8 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 			gMember.GET("", a.MApi.QueryUser)
 			gMember.GET(":id", a.MApi.GetUser)
 			gMember.POST("", a.MApi.CreateUser)
-			gMember.PUT("/id", a.MApi.UpdateUser)
-			gMember.DELETE("/id", a.MApi.DeleteUser)
+			gMember.PUT("", a.MApi.UpdateUser)
+			gMember.DELETE(":id", a.MApi.DeleteUser)
 			// gMember.PATCH(":id/enable", a.MApi.Enable)
 			// gMember.PATCH(":id/disable", a.MApi.Disable)
 		}

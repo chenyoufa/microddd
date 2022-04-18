@@ -4,7 +4,6 @@ import (
 	"errors"
 	"microddd/domain/entity"
 	"microddd/domain/valobj"
-	"microddd/infrastructure/utils/encrypt"
 
 	"github.com/google/uuid"
 )
@@ -20,11 +19,12 @@ func NewMember(loginname string, email string, password string) (*Member_aggre, 
 	if loginname == "" || email == "" || password == "" {
 		return nil, errors.New("请输入必填项")
 	}
+
 	user := entity.UserEntity{
-		ID:        uuid.New().String(),
+		// ID:        uuid.New(),
 		LoginName: loginname,
 		Email:     email,
-		Password:  string(encrypt.AesEncryptCFB(password, "")),
+		Password:  password,
 	}
 	return &Member_aggre{
 		&user,
@@ -37,16 +37,22 @@ func (m *Member_aggre) Delete() {
 	m.userroles = nil
 }
 
-func (m *Member_aggre) GetRoleIDs() []string {
+func (m *Member_aggre) GetRoleIDs() []uuid.UUID {
 
-	var rids []string
-	for _, item := range m.userroles {
-		rids = append(rids, item.RoleID)
+	var rids []uuid.UUID
+	// fmt.Println("agguidlen:", len(m.userroles), m.userroles)
+	if len(m.userroles) > 0 {
+		for _, item := range m.userroles {
+			rids = append(rids, item.RoleID)
+		}
+	} else {
+		return nil
 	}
+	// fmt.Println("agguid:", rids)
 	return rids
 }
 
-func (m *Member_aggre) AddRoles(roleids ...string) {
+func (m *Member_aggre) AddRoles(roleids ...uuid.UUID) {
 	if len(roleids) <= 0 {
 		return
 	}
@@ -57,7 +63,7 @@ func (m *Member_aggre) AddRoles(roleids ...string) {
 	}
 
 }
-func (m *Member_aggre) RemoveRoles(roleids ...string) {
+func (m *Member_aggre) RemoveRoles(roleids ...uuid.UUID) {
 
 	for index, oldroleid := range m.userroles {
 		if ok := isExit(oldroleid.RoleID, roleids); ok {
@@ -66,7 +72,7 @@ func (m *Member_aggre) RemoveRoles(roleids ...string) {
 		}
 	}
 }
-func isExit(searchval string, roleids []string) bool {
+func isExit(searchval uuid.UUID, roleids []uuid.UUID) bool {
 	for _, hvaid := range roleids {
 		if hvaid == searchval {
 			return true

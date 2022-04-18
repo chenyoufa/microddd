@@ -1,8 +1,11 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+)
 
 func main() {
+
 	new_router, err := NewApp()
 	if err != nil {
 		panic(err)

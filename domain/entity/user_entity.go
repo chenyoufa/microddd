@@ -1,8 +1,11 @@
 package entity
 
+import "github.com/google/uuid"
+
 type UserEntity struct {
-	ID        string
+	ID        uuid.UUID
 	LoginName string
 	Email     string
 	Password  string
+	Status    int
 }

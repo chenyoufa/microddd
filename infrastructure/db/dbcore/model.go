@@ -5,6 +5,7 @@ import (
 	"math/rand"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/oklog/ulid/v2"
 	"github.com/pkg/errors"
 	"gorm.io/gorm"
@@ -27,7 +28,11 @@ func NewUlid() string {
 func registerCallback(db *gorm.DB) {
 	// 自动添加uuid
 	err := db.Callback().Create().Before("gorm:create").Register("uuid", func(db *gorm.DB) {
-		db.Statement.SetColumn("id", NewUlid())
+		// if _, ok := uuid.Parse(db.Statement.Get("ID")); ok {
+
+		// }
+		// db.Statement.SetColumn("ID", NewUlid())
+		db.Statement.SetColumn("ID", uuid.New())
 	})
 	if err != nil {
 		log.Panicf("err: %+v", errors.WithStack(err))

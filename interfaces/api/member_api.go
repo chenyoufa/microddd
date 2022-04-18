@@ -25,7 +25,7 @@ type memberApi struct {
 	application.MemberApper
 }
 
-// @Tags UserAPI
+// @Tags UserAPI  ok
 // @Summary 查询指定数据2
 // @Security ApiKeyAuth
 // @Param id path string true "标识"
@@ -66,7 +66,7 @@ func (mapi *memberApi) QueryUser(c *gin.Context) {
 	c.JSON(http.StatusOK, dto)
 }
 
-// @Tags UserAPI
+// @Tags UserAPI  ok
 // @Summary 新增数据
 // @Security ApiKeyAuth
 // @Param  body body dto.Member_dto true "交款查询参数"
@@ -88,12 +88,12 @@ func (mapi *memberApi) CreateUser(c *gin.Context) {
 	c.JSON(http.StatusOK, dto)
 }
 
-// @Tags UserAPI
+// @Tags UserAPI  ok
 // @Summary 更新数据
 // @Security ApiKeyAuth
-// @Param id path int true "唯一标识"
+// @Param  body body dto.Member_dto true "修改参数"
 // @Success 200
-// @Router /api/v1/member/{id} [put]
+// @Router /api/v1/member [put]
 func (mapi *memberApi) UpdateUser(c *gin.Context) {
 	var err error
 	var mdto dto.Member_dto
@@ -111,12 +111,14 @@ func (mapi *memberApi) UpdateUser(c *gin.Context) {
 // @Tags UserAPI
 // @Summary 删除指定数据
 // @Security ApiKeyAuth
-// @Param id path int true "唯一标识"
+// @Param id path string true "要删除的数据ID"
 // @Success 200
 // @Router /api/v1/member/{id} [delete]
 func (mapi *memberApi) DeleteUser(c *gin.Context) {
 	var err error
+
 	uid, err := uuid.Parse(c.Param("id"))
+	log.Println("uuid:", uid)
 	if err != nil {
 		c.JSON(http.StatusUnprocessableEntity, "UnprocessableEntity")
 	}

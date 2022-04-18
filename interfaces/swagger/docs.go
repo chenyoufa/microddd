@@ -4,7 +4,7 @@ package swagger
 
 import "github.com/swaggo/swag"
 
-const docTemplate = `{
+const docTemplate_swagger = `{
     "schemes": {{ marshal .Schemes }},
     "swagger": "2.0",
     "info": {
@@ -42,6 +42,33 @@ const docTemplate = `{
                     }
                 }
             },
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "tags": [
+                    "UserAPI  ok"
+                ],
+                "summary": "更新数据",
+                "parameters": [
+                    {
+                        "description": "修改参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.Member_dto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            },
             "post": {
                 "security": [
                     {
@@ -49,7 +76,7 @@ const docTemplate = `{
                     }
                 ],
                 "tags": [
-                    "UserAPI"
+                    "UserAPI  ok"
                 ],
                 "summary": "新增数据",
                 "parameters": [
@@ -81,38 +108,13 @@ const docTemplate = `{
                     }
                 ],
                 "tags": [
-                    "UserAPI"
+                    "UserAPI  ok"
                 ],
                 "summary": "查询指定数据2",
                 "parameters": [
                     {
                         "type": "string",
                         "description": "标识",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": ""
-                    }
-                }
-            },
-            "put": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "tags": [
-                    "UserAPI"
-                ],
-                "summary": "更新数据",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "唯一标识",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -136,8 +138,8 @@ const docTemplate = `{
                 "summary": "删除指定数据",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "description": "唯一标识",
+                        "type": "string",
+                        "description": "要删除的数据ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -190,8 +192,8 @@ const docTemplate = `{
     }
 }`
 
-// SwaggerInfo holds exported Swagger Info so clients can modify it
-var SwaggerInfo = &swag.Spec{
+// SwaggerInfo_swagger holds exported Swagger Info so clients can modify it
+var SwaggerInfo_swagger = &swag.Spec{
 	Version:          "",
 	Host:             "",
 	BasePath:         "",
@@ -199,9 +201,9 @@ var SwaggerInfo = &swag.Spec{
 	Title:            "",
 	Description:      "",
 	InfoInstanceName: "swagger",
-	SwaggerTemplate:  docTemplate,
+	SwaggerTemplate:  docTemplate_swagger,
 }
 
 func init() {
-	swag.Register(SwaggerInfo.InstanceName(), SwaggerInfo)
+	swag.Register(SwaggerInfo_swagger.InstanceName(), SwaggerInfo_swagger)
 }

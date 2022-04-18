@@ -26,12 +26,14 @@ func (u *memberRepos) Get(ctx context.Context, uuid uuid.UUID) (*aggregate.Membe
 	var user model.Userpo
 	// var roles []*model.Role_po
 	// var relations []model.UserRolepo
-	err1 := dbcore.GetDB(ctx, u.db).Where("id=?", uuid).Preload("UserRoles").Find(&user).Error
+	err1 := dbcore.GetDB(ctx, u.db).Where("id=?", uuid).Preload("UserRolepos").Find(&user).Error
 
 	// err2 := dbcore.GetDB(ctx, u.db).Model(&relations).Association("Role").Find(&roles)
 	// err3 := dbcore.GetDB(ctx, u.db).Model(&relations).Association("User").Find(&user)
 
-	// log.Println("user:", user)
+	for _, item := range user.UserRolepos {
+		log.Println("aggre:", item)
+	}
 	// log.Println("relations:", relations)
 	if err1 != nil {
 		return nil, nil
@@ -58,39 +60,16 @@ func (u *memberRepos) GetList(ctx context.Context, uuid uuid.UUID) ([]*aggregate
 	return cmdos, nil
 }
 func (u *memberRepos) Add(ctx context.Context, aggre *aggregate.Member_aggre) (bool, error) {
-	var customerPo = &model.CustomerPo{}
-	customerPo.ToPo(aggre)
-
+	var userpo = &model.Userpo{}
+	userpo.ToPo(aggre)
 	var err error
-	log.Println("customerPo:", customerPo.Userroles)
-
-	// uid := uuid.New().String()
-	// userpo := model.Userpo{
-	// 	ID:        uid,
-	// 	LoginName: "fage22",
-	// 	Email:     "79756530@qq.com",
-	// 	Password:  "12548",
-	// 	UpdatedAt: time.Now(),
-	// 	CreatedAt: time.Now(),
-	// 	// UserRoles: nil,
-	// }
-	// log.Println(userpo)
 	userroles := model.UserRolepo{}
-	dbcore.GetDB(ctx, u.db).Where("User_ID=?", customerPo.User.ID).Find(&userroles)
-
+	dbcore.GetDB(ctx, u.db).Where("user_id=?", userpo.ID).Find(&userroles)
 	dbcore.Transaction(ctx, u.db, func(txctx context.Context) error {
-
 		dbcore.GetDB(ctx, u.db).Delete(userroles)
-		customerPo.User.UserRolepos = append(customerPo.User.UserRolepos, &userroles)
-		err = dbcore.GetDB(ctx, u.db).Debug().Create(customerPo.User).Error
-
+		err = dbcore.GetDB(ctx, u.db).Debug().Create(userpo).Error
 		return err
 	})
-	// dbcore.Transaction(ctx, u.db, func(txctx context.Context) error {
-
-	// 	err = dbcore.GetDB(ctx, u.db).Create(customerPo.Userroles).Error
-	// 	return err
-	// })
 	if err != nil {
 		log.Println(err)
 		return false, err
@@ -98,14 +77,19 @@ func (u *memberRepos) Add(ctx context.Context, aggre *aggregate.Member_aggre) (b
 	return true, nil
 }
 func (u *memberRepos) Edit(ctx context.Context, aggre *aggregate.Member_aggre) (bool, error) {
-	var customerPo = &model.CustomerPo{}
-	customerPo.ToPo(aggre)
+	var userpo = &model.Userpo{}
+	userpo.ToPo(aggre)
 	var err error
-	err = dbcore.GetDB(ctx, u.db).Updates(customerPo.User).Error
-	// dbcore.Transaction(ctx, u.db, func(txctx context.Context) error {
-	// 	// err = dbcore.GetDB(ctx, u.db).Updates(customerPo.Userroles).Error
-	// 	return err
-	// })
+
+	userroles := model.UserRolepo{}
+	dbcore.GetDB(ctx, u.db).Where("user_id=?", userpo.ID).Find(&userroles)
+
+	dbcore.Transaction(ctx, u.db, func(txctx context.Context) error {
+		// err = dbcore.GetDB(ctx, u.db).Updates(customerPo.Userroles).Error
+		dbcore.GetDB(ctx, u.db).Delete(userroles)
+		err = dbcore.GetDB(ctx, u.db).Updates(userpo).Error
+		return err
+	})
 	if err != nil {
 		return false, err
 	}
