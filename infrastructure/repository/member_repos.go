@@ -81,12 +81,14 @@ func (u *memberRepos) Edit(ctx context.Context, aggre *aggregate.Member_aggre) (
 	userpo.ToPo(aggre)
 	var err error
 
-	userroles := model.UserRolepo{}
-	dbcore.GetDB(ctx, u.db).Where("user_id=?", userpo.ID).Find(&userroles)
+	userroles := []*model.UserRolepo{}
+	dbcore.GetDB(ctx, u.db).Where("user_id=? and role_id in (?) ", userpo.ID, aggre.GetRoleIDs()).Find(&userroles)
 
 	dbcore.Transaction(ctx, u.db, func(txctx context.Context) error {
 		// err = dbcore.GetDB(ctx, u.db).Updates(customerPo.Userroles).Error
-		dbcore.GetDB(ctx, u.db).Delete(userroles)
+		// dbcore.GetDB(ctx, u.db).Delete(userroles)
+		userpo.UserRolepos = userroles
+		log.Println("userpo:", *userpo)
 		err = dbcore.GetDB(ctx, u.db).Updates(userpo).Error
 		return err
 	})
