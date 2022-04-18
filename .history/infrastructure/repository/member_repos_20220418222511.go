@@ -104,7 +104,7 @@ func (u *memberRepos) Edit(ctx context.Context, aggre *aggregate.Member_aggre) (
 func (u *memberRepos) Remove(ctx context.Context, aggre *aggregate.Member_aggre) (bool, error) {
 	var userpo = &model.Userpo{}
 	userpo.ToPo(aggre)
-	userpo.UserRolepos = nil
+
 	err := dbcore.GetDB(ctx, u.db).Model(userpo).Update("status", userpo.Status).Error
 	if err != nil {
 		return false, err

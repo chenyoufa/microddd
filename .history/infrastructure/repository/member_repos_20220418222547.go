@@ -19,7 +19,7 @@ type memberRepos struct {
 
 var _ repository.MemberRepoer = &memberRepos{}
 
-func (u *memberRepos) Get(ctx context.Context, uuid uuid.UUID) (*aggregate.Member_aggre, error) {
+func (u *memberRepos) Get(ctx context.Context, uuid uuid.UUID, sss string) (*aggregate.Member_aggre, error) {
 	var err error
 	// dbcore.Transaction(ctx, u.db, func(txctx context.Context) error {
 	// 	err = u.db.Where("id=?", uuid).Find(&userpo).Error
@@ -104,7 +104,7 @@ func (u *memberRepos) Edit(ctx context.Context, aggre *aggregate.Member_aggre) (
 func (u *memberRepos) Remove(ctx context.Context, aggre *aggregate.Member_aggre) (bool, error) {
 	var userpo = &model.Userpo{}
 	userpo.ToPo(aggre)
-	userpo.UserRolepos = nil
+
 	err := dbcore.GetDB(ctx, u.db).Model(userpo).Update("status", userpo.Status).Error
 	if err != nil {
 		return false, err

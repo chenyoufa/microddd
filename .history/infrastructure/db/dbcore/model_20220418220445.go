@@ -5,7 +5,6 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/google/uuid"
 	"github.com/oklog/ulid/v2"
 	"github.com/pkg/errors"
 	"gorm.io/gorm"
@@ -31,10 +30,8 @@ func registerCallback(db *gorm.DB) {
 		// if _, ok := uuid.Parse(db.Statement.Get("ID")); ok {
 
 		// }
-		// aa, _ := db.Statement.Get("id")
-		// log.Println("id:", aa)
 		// db.Statement.SetColumn("ID", NewUlid())
-		db.Statement.SetColumn("ID", uuid.New())
+		// db.Statement.SetColumn("ID", uuid.New())
 	})
 	if err != nil {
 		log.Panicf("err: %+v", errors.WithStack(err))

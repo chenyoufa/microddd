@@ -31,8 +31,8 @@ func registerCallback(db *gorm.DB) {
 		// if _, ok := uuid.Parse(db.Statement.Get("ID")); ok {
 
 		// }
-		// aa, _ := db.Statement.Get("id")
-		// log.Println("id:", aa)
+		aa, _ := db.Statement.Get("id")
+		log.Println("id:")
 		// db.Statement.SetColumn("ID", NewUlid())
 		db.Statement.SetColumn("ID", uuid.New())
 	})

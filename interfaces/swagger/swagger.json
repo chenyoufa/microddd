@@ -157,6 +157,9 @@
                 "password": {
                     "type": "string"
                 },
+                "status": {
+                    "type": "integer"
+                },
                 "userroles": {
                     "description": "roles []*entity.RoleEntity",
                     "type": "array",
