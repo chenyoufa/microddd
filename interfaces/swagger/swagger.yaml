@@ -1,13 +1,13 @@
 definitions:
   dto.Member_dto:
     properties:
-      _:
-        type: string
       email:
         type: string
       id:
         type: string
       loginName:
+        type: string
+      password:
         type: string
       userroles:
         description: roles []*entity.RoleEntity
@@ -77,17 +77,17 @@ paths:
       - UserAPI
     get:
       parameters:
-      - description: 唯一标识
+      - description: 标识
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       responses:
         "200":
           description: ""
       security:
       - ApiKeyAuth: []
-      summary: 查询指定数据
+      summary: 查询指定数据2
       tags:
       - UserAPI
     put:

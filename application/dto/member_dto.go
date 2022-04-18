@@ -6,7 +6,6 @@ import (
 	"microddd/domain/valobj"
 
 	"github.com/devfeel/mapper"
-	"github.com/google/uuid"
 )
 
 type Member_dto struct {
@@ -39,7 +38,10 @@ func (m *Member_dto) ToDto(aggre *aggregate.Member_aggre) {
 
 		userdtos = append(userdtos, UserRoleDto{item.String(), aggre.User.ID.String()})
 	}
-	mapper.AutoMapper(userEntity, m)
+	// mapper.AutoMapper(&userEntity, &m)
+	m.Email = userEntity.Email
+	m.ID = userEntity.ID
+	m.LoginName = userEntity.LoginName
 	m.Userroles = userdtos
 	m.Password = ""
 }
@@ -50,13 +52,13 @@ func (m *Member_dto) ToAggre() *aggregate.Member_aggre {
 	if err != nil {
 		return nil
 	}
-	var roleids []uuid.UUID
+	var roleids []string
 	if m.Userroles == nil {
 		m.Userroles = make([]UserRoleDto, 0)
 	}
 	for _, item := range m.Userroles {
-		uid, _ := uuid.Parse(item.RoleID)
-		roleids = append(roleids, uid)
+		// uid, _ := uuid.Parse(item.RoleID)
+		roleids = append(roleids, item.RoleID)
 	}
 	mapper.AutoMapper(m, aggre)
 

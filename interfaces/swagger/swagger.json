@@ -71,11 +71,11 @@
                 "tags": [
                     "UserAPI"
                 ],
-                "summary": "查询指定数据",
+                "summary": "查询指定数据2",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "description": "唯一标识",
+                        "type": "string",
+                        "description": "标识",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -143,9 +143,6 @@
         "dto.Member_dto": {
             "type": "object",
             "properties": {
-                "_": {
-                    "type": "string"
-                },
                 "email": {
                     "type": "string"
                 },
@@ -153,6 +150,9 @@
                     "type": "string"
                 },
                 "loginName": {
+                    "type": "string"
+                },
+                "password": {
                     "type": "string"
                 },
                 "userroles": {

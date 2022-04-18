@@ -4,7 +4,7 @@ package swagger
 
 import "github.com/swaggo/swag"
 
-const docTemplate_swagger = `{
+const docTemplate = `{
     "schemes": {{ marshal .Schemes }},
     "swagger": "2.0",
     "info": {
@@ -83,11 +83,11 @@ const docTemplate_swagger = `{
                 "tags": [
                     "UserAPI"
                 ],
-                "summary": "查询指定数据",
+                "summary": "查询指定数据2",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "description": "唯一标识",
+                        "type": "string",
+                        "description": "标识",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -155,9 +155,6 @@ const docTemplate_swagger = `{
         "dto.Member_dto": {
             "type": "object",
             "properties": {
-                "_": {
-                    "type": "string"
-                },
                 "email": {
                     "type": "string"
                 },
@@ -165,6 +162,9 @@ const docTemplate_swagger = `{
                     "type": "string"
                 },
                 "loginName": {
+                    "type": "string"
+                },
+                "password": {
                     "type": "string"
                 },
                 "userroles": {
@@ -190,8 +190,8 @@ const docTemplate_swagger = `{
     }
 }`
 
-// SwaggerInfo_swagger holds exported Swagger Info so clients can modify it
-var SwaggerInfo_swagger = &swag.Spec{
+// SwaggerInfo holds exported Swagger Info so clients can modify it
+var SwaggerInfo = &swag.Spec{
 	Version:          "",
 	Host:             "",
 	BasePath:         "",
@@ -199,9 +199,9 @@ var SwaggerInfo_swagger = &swag.Spec{
 	Title:            "",
 	Description:      "",
 	InfoInstanceName: "swagger",
-	SwaggerTemplate:  docTemplate_swagger,
+	SwaggerTemplate:  docTemplate,
 }
 
 func init() {
-	swag.Register(SwaggerInfo_swagger.InstanceName(), SwaggerInfo_swagger)
+	swag.Register(SwaggerInfo.InstanceName(), SwaggerInfo)
 }

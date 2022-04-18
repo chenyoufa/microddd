@@ -6,3 +6,4 @@
 5   通用角色权限管理聚合划分 **
 6   gin router
 7   swag init --parseDependency --generalInfo ./cmd/microddd/main.go --output ./interfaces/swagger/
+8   cabsh
