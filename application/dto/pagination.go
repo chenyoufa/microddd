@@ -7,15 +7,6 @@ type PaginationParam struct {
 	PageSize   int  `form:"pageSize,default=10" binding:"max=100"`
 }
 
-// UserQueryParam 查询条件
-type UserQueryParam struct {
-	PaginationParam
-	UserName   string   `form:"userName"`   // 用户名
-	QueryValue string   `form:"queryValue"` // 模糊查询
-	Status     int      `form:"status"`     // 用户状态(1:启用 2:停用)
-	RoleIDs    []uint64 `form:"-"`          // 角色ID列表
-}
-
 func (a PaginationParam) GetCurrent() int {
 	return a.Current
 }
@@ -69,4 +60,10 @@ func NewOrderField(key string, d OrderDirection) *OrderField {
 type OrderField struct {
 	Key       string
 	Direction OrderDirection
+}
+
+// UserQueryOptions 查询可选参数项
+type QueryOptions struct {
+	OrderFields  []*OrderField
+	SelectFields []string
 }

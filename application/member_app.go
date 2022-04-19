@@ -11,7 +11,7 @@ import (
 
 type MemberApper interface {
 	Get(ctx context.Context, uid uuid.UUID) (*dto.Member_dto, error)
-	GetList(ctx context.Context, uid uuid.UUID) ([]*dto.Member_dto, error)
+	GetList(ctx context.Context, param dto.UserQueryParam, opts ...dto.QueryOptions) ([]*dto.Member_dto, error)
 	Add(ctx context.Context, mdto *dto.Member_dto) (bool, error)
 	Edit(ctx context.Context, mdto *dto.Member_dto) (bool, error)
 	Login(ctx context.Context, usname string, pwd string) (bool, error)
@@ -23,11 +23,14 @@ type memberApp struct {
 	mRepo repository.MemberRepoer
 }
 
+var _ MemberApper = &memberApp{}
+
 // var memberAppSet = wire.NewSet(
 // 	wire.Struct(new(memberApp)),
 // 	wire.Bind(new(MemberApper), new(*memberApp)))
 
 func NewmemberApp(memberRepos repository.MemberRepoer) *memberApp {
+
 	return &memberApp{
 		mRepo: memberRepos,
 	}
@@ -44,7 +47,16 @@ func (u *memberApp) Get(ctx context.Context, uid uuid.UUID) (*dto.Member_dto, er
 	return &rdto, nil
 }
 
-func (u *memberApp) GetList(ctx context.Context, uid uuid.UUID) ([]*dto.Member_dto, error) {
+func (a *memberApp) getQueryOption(opts ...dto.QueryOptions) dto.QueryOptions {
+	var opt dto.QueryOptions
+	if len(opts) > 0 {
+		opt = opts[0]
+	}
+	return opt
+}
+func (u *memberApp) GetList(ctx context.Context, param dto.UserQueryParam, opts ...dto.QueryOptions) ([]*dto.Member_dto, error) {
+
+	opt := u.getQueryOption(opts...)
 	list, err := u.mRepo.GetList(ctx, uid)
 	var dtolist []*dto.Member_dto
 	for _, item := range list {

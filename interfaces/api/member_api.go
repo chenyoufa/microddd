@@ -48,18 +48,17 @@ func (mapi *memberApi) GetUser(c *gin.Context) {
 // @Tags UserAPI
 // @Summary 查询指定数据列表
 // @Security ApiKeyAuth
-// @Param id path int true "唯一标识"
+// @Param id path userparam true "唯一标识"
 // @Success 200
 // @Router /api/v1/member [get]
 func (mapi *memberApi) QueryUser(c *gin.Context) {
 	var err error
-	var mdto dto.Member_dto
-	if err := c.ShouldBindJSON(&mdto); err != nil {
+	var userparam dto.UserQueryParam
+	if err := c.ShouldBindJSON(&userparam); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Login information is not complete"})
 		return
 	}
-	uid, err := uuid.Parse(mdto.ID)
-	dto, err := mapi.GetList(context.Background(), uid)
+	dto, err := mapi.GetList(context.Background(), userparam)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, "Unauthorized")
 	}

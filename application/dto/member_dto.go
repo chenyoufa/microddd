@@ -20,6 +20,14 @@ type UserRoleDto struct {
 	UserID string
 }
 
+// UserQueryParam 查询条件
+type UserQueryParam struct {
+	PaginationParam
+	UserName   string `form:"userName"`   // 用户名
+	QueryValue string `form:"queryValue"` // 模糊查询
+	Status     int    `form:"status"`     // 用户状态(1:启用 2:停用)
+}
+
 func (m *Member_dto) ToDto(aggre *aggregate.Member_aggre) {
 	userRoles := aggre.GetRoleIDs()
 	userdtos := []UserRoleDto{}

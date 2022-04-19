@@ -4,6 +4,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+var str = 111
+
 func main() {
 
 	new_router, err := NewApp()
