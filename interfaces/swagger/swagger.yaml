@@ -9,6 +9,8 @@ definitions:
         type: string
       password:
         type: string
+      status:
+        type: integer
       userroles:
         description: roles []*entity.RoleEntity
         items:

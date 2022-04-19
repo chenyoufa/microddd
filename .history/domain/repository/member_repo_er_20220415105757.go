@@ -13,5 +13,4 @@ type MemberRepoer interface {
 	Add(ctx context.Context, aggre *aggregate.Member_aggre) (bool, error)
 	Edit(ctx context.Context, aggre *aggregate.Member_aggre) (bool, error)
 	Login(ctx context.Context, usname string, pwd string) (bool, error)
-	Remove(ctx context.Context, aggre *aggregate.Member_aggre) (bool, error)
 }

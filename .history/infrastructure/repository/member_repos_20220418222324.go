@@ -4,7 +4,6 @@ import (
 	"context"
 	"log"
 	"microddd/domain/aggregate"
-	"microddd/domain/repository"
 
 	"microddd/infrastructure/db/dbcore"
 	"microddd/infrastructure/model"
@@ -16,8 +15,6 @@ import (
 type memberRepos struct {
 	db *gorm.DB
 }
-
-var _ repository.MemberRepoer = &memberRepos{}
 
 func (u *memberRepos) Get(ctx context.Context, uuid uuid.UUID) (*aggregate.Member_aggre, error) {
 	var err error
@@ -104,7 +101,7 @@ func (u *memberRepos) Edit(ctx context.Context, aggre *aggregate.Member_aggre) (
 func (u *memberRepos) Remove(ctx context.Context, aggre *aggregate.Member_aggre) (bool, error) {
 	var userpo = &model.Userpo{}
 	userpo.ToPo(aggre)
-	userpo.UserRolepos = nil
+
 	err := dbcore.GetDB(ctx, u.db).Model(userpo).Update("status", userpo.Status).Error
 	if err != nil {
 		return false, err
