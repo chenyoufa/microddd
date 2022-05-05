@@ -56,18 +56,18 @@ func (a *memberApp) getQueryOption(opts ...dto.QueryOptions) dto.QueryOptions {
 }
 func (u *memberApp) GetList(ctx context.Context, param dto.UserQueryParam, opts ...dto.QueryOptions) ([]*dto.Member_dto, error) {
 
-	opt := u.getQueryOption(opts...)
-	list, err := u.mRepo.GetList(ctx, uid)
+	// opt := u.getQueryOption(opts...)
+	// list, err := u.mRepo.GetList(ctx, uid)
 	var dtolist []*dto.Member_dto
-	for _, item := range list {
-		rdto := dto.Member_dto{}
-		rdto.ToDto(item)
-		dtolist = append(dtolist, &rdto)
-	}
-	if err != nil {
-		return nil, err
-	}
-	return dtolist, err
+	// for _, item := range list {
+	// 	rdto := dto.Member_dto{}
+	// 	rdto.ToDto(item)
+	// 	dtolist = append(dtolist, &rdto)
+	// }
+	// if err != nil {
+	// 	return nil, err
+	// }
+	return dtolist, nil
 }
 func (u *memberApp) Add(ctx context.Context, mdto *dto.Member_dto) (bool, error) {
 

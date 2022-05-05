@@ -1,12 +1,27 @@
 package main
 
 import (
+	"fmt"
+	"os"
+
 	"github.com/gin-gonic/gin"
 )
 
-var str = 111
+func Foo(string string) error {
+	var err *os.PathError = nil
+	// …
+	return err
+}
 
 func main() {
+
+	err := Foo()
+	fmt.Printf("1:%#v", err)
+	fmt.Println("2", err == nil)
+
+}
+
+func main1() {
 
 	new_router, err := NewApp()
 	if err != nil {
