@@ -12,9 +12,8 @@ import (
 
 func main() {
 	fmt.Println("init start ...")
-	myrepo := repo.NewUserPo("127.0.0.1:3306")
-
-	// var myrepo = &repo.UserPo{db}
+	// db := gorm.DB{}
+	var myrepo = &repo.UserPo{}
 	myapp := app.UserApp{Repo: myrepo}
 	myapi := &api.UserApi{App: myapp}
 
