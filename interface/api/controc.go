@@ -11,12 +11,12 @@ import (
 )
 
 type UserApi struct {
-	app user.UserApp
+	App user.UserApp
 }
 
 func (uapi *UserApi) Get(c *gin.Context) {
 	id := c.Query("id")
-	rtval := uapi.app.Query(id)
+	rtval := uapi.App.Query(id)
 	c.JSON(http.StatusOK, rtval)
 }
 func (uapi *UserApi) Post(c *gin.Context) {
@@ -28,13 +28,13 @@ func (uapi *UserApi) Post(c *gin.Context) {
 		fmt.Println("err:%v", err)
 		c.JSON(http.StatusInternalServerError, err)
 	}
-	rtval := uapi.app.Add(model)
+	rtval := uapi.App.Add(model)
 	c.JSON(http.StatusOK, rtval)
 
 }
 func (uapi *UserApi) Del(c *gin.Context) {
 	id := c.Query("id")
-	rtval := uapi.app.Del(id)
+	rtval := uapi.App.Del(id)
 	c.JSON(http.StatusOK, rtval)
 }
 
@@ -50,6 +50,6 @@ func (uapi *UserApi) Put(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusUnprocessableEntity, err)
 	}
-	rtval := uapi.app.Update(userdo)
+	rtval := uapi.App.Update(userdo)
 	c.JSON(http.StatusOK, rtval)
 }

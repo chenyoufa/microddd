@@ -2,18 +2,27 @@ package main
 
 import (
 	"fmt"
+	app "myddd/application/user"
+	repo "myddd/infrastructure/repositores"
 	api "myddd/interface/api"
-	myroute "myddd/interface/router"
+	route "myddd/interface/router"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 func main() {
 	fmt.Println("init start ...")
-	u := api.UserApi{}
-	c := gin.Default()
-	r := myroute.Router{}
-	c.Routes(r.UserApi)
-	c.Routes()
+	db := gorm.DB{}
+	var myrepo = &repo.UserPo{db}
+	myapp := app.UserApp{Repo: myrepo}
+	myapi := &api.UserApi{App: myapp}
 
+	engine := gin.Default()
+	r := route.Router{
+		UserApi: myapi,
+	}
+	r.Register(engine)
+
+	engine.Run()
 }

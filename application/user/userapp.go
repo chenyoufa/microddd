@@ -6,18 +6,18 @@ import (
 )
 
 type UserApp struct {
-	repo repository.UserRepoer
+	Repo repository.UserRepoer
 }
 
 func (u *UserApp) Add(usermodel *model.User) string {
-	return u.repo.Add(usermodel)
+	return u.Repo.Add(usermodel)
 }
 func (u *UserApp) Del(id string) string {
-	return u.repo.Del(id)
+	return u.Repo.Del(id)
 }
 func (u *UserApp) Update(usermodel *model.User) string {
-	return u.repo.Update(usermodel)
+	return u.Repo.Update(usermodel)
 }
 func (u *UserApp) Query(id string) string {
-	return u.repo.Query(id)
+	return u.Repo.Query(id)
 }

@@ -7,7 +7,7 @@ import (
 )
 
 type UserPo struct {
-	db gorm.DB
+	DB gorm.DB
 }
 
 // var _repo UserRepoer = UserPo{}
