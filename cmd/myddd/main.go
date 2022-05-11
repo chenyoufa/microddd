@@ -8,13 +8,13 @@ import (
 	route "myddd/interface/router"
 
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 )
 
 func main() {
 	fmt.Println("init start ...")
-	db := gorm.DB{}
-	var myrepo = &repo.UserPo{db}
+	myrepo := repo.NewUserPo("127.0.0.1:3306")
+
+	// var myrepo = &repo.UserPo{db}
 	myapp := app.UserApp{Repo: myrepo}
 	myapi := &api.UserApi{App: myapp}
 

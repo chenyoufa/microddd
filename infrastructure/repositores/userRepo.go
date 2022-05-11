@@ -7,7 +7,7 @@ import (
 )
 
 type UserPo struct {
-	DB gorm.DB
+	db gorm.DB
 }
 
 // var _repo UserRepoer = UserPo{}
@@ -25,4 +25,11 @@ func (u *UserPo) Update(usermodel *model.User) string {
 }
 func (u *UserPo) Query(id string) string {
 	return "UserPo Query"
+}
+
+func NewUserPo(dbfileName string) *UserPo {
+	// db, _ := gorm.Open()
+	sqliteHandler := new(UserPo)
+	// sqliteHandler.db = db
+	return sqliteHandler
 }
