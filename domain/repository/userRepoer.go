@@ -1,8 +1,10 @@
 package repository
 
+import "myddd/domain/model"
+
 type UserRepoer interface {
-	Add() string
-	Del() string
-	Update() string
-	Query() string
+	Add(usermodel *model.User) string
+	Del(id string) string
+	Update(usermodel *model.User) string
+	Query(id string) string
 }

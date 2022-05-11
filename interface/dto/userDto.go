@@ -15,11 +15,12 @@ func (u *UserDto) ToDto(do model.User) {
 	u.Nickanme = do.Nickanme
 	u.Status = do.Status
 }
-func (u *UserDto) ToDo() *model.User {
-	m := &model.User{}
-	m.ID = u.ID
-	m.Name = u.Name
-	m.Nickanme = u.Nickanme
-	m.Status = u.Status
-	return m
-}
+
+// func (u *UserDto) ToDo() *model.User {
+// 	m := &model.User{}
+// 	m.ID = u.ID
+// 	m.Name = u.Name
+// 	m.Nickanme = u.Nickanme
+// 	m.Status = u.Status
+// 	return m
+// }

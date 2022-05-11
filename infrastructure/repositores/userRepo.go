@@ -1,23 +1,28 @@
 package repositores
 
-import "gorm.io/gorm"
+import (
+	"myddd/domain/model"
+
+	"gorm.io/gorm"
+)
 
 type UserPo struct {
 	db gorm.DB
 }
 
 // var _repo UserRepoer = UserPo{}
+// var _ repository.UserRepoer = &UserPo{}
 
-func (u *UserPo) Add() string {
+func (u *UserPo) Add(usermodel *model.User) string {
 
 	return " UserPo add"
 }
-func (u *UserPo) Del() string {
+func (u *UserPo) Del(id string) string {
 	return "UserPo Del"
 }
-func (u *UserPo) Update() string {
+func (u *UserPo) Update(usermodel *model.User) string {
 	return "UserPo Update"
 }
-func (u *UserPo) Query() string {
+func (u *UserPo) Query(id string) string {
 	return "UserPo Query"
 }

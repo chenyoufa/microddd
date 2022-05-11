@@ -10,18 +10,14 @@ type UserApp struct {
 }
 
 func (u *UserApp) Add(usermodel *model.User) string {
-	u.repo.Add()
-	return "add"
+	return u.repo.Add(usermodel)
 }
 func (u *UserApp) Del(id string) string {
-	u.repo.Del()
-	return "Del"
+	return u.repo.Del(id)
 }
 func (u *UserApp) Update(usermodel *model.User) string {
-	u.repo.Update()
-	return "Update"
+	return u.repo.Update(usermodel)
 }
 func (u *UserApp) Query(id string) string {
-	u.repo.Query()
-	return "Query"
+	return u.repo.Query(id)
 }
